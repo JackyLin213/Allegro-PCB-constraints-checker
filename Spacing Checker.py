@@ -26,8 +26,8 @@ class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Impedance Checker V1.0")
-        self.geometry("935x600")
-        self.resizable(False, False)
+        self.geometry("1280x800")
+        #self.resizable(False, False)
         self.tab_contents = []
         
         # File import panel
