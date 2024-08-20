@@ -161,9 +161,9 @@ class TabContent(Frame):
             self.line_to_via_areas.append(line_to_via_area)
             
             line_to_shape_label = Label(self, text="Line to Shape")
-            line_to_shape_label.grid(row=3, column=i*4, padx=5, pady=5, sticky='w')
+            line_to_shape_label.grid(row=5, column=i*4, padx=5, pady=5, sticky='w')
             line_to_shape_area = scrolledtext.ScrolledText(self, height=10, width=40)
-            line_to_shape_area.grid(row=4, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
+            line_to_shape_area.grid(row=6, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_shape_areas.append(line_to_shape_area)
             
             self.grid_columnconfigure(i*4, weight=1)
