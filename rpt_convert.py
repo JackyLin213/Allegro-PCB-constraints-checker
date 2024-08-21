@@ -29,8 +29,8 @@ def convert_rpt_to_txt(input_file_path, output_file_path):
 
 def extract_values(line):
     parts = re.split(r'\s+', line.strip())
-    if len(parts) >= 13:
-        return [parts[0], parts[2], parts[5], parts[9], parts[12]]
+    if len(parts) >= 8:
+        return [parts[0], parts[2], parts[7]]
     return None
 
 def add_unique(data_list, new_item):
