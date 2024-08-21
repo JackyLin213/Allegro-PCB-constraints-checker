@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
 from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
-import re
+import re 
 
 class Utils:
     @staticmethod
@@ -21,7 +21,7 @@ class Utils:
                 regex += char
         regex += "$"
         return regex
-
+    
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
