@@ -26,20 +26,20 @@ class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Spacing Checker V1.0")
-        self.geometry("1280x750")
+        self.geometry("1280x850")
         #self.resizable(False, False)
         self.tab_contents = []
         
         # File import panel
         import_panel = Frame(self)
-        import_panel.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
-        
-        self.input_file_path_field = Entry(import_panel, width=50)
-        self.input_file_path_field.pack(side=tk.LEFT, padx=5)
-        
+        import_panel.pack(side=tk.TOP, padx=0, pady=10, anchor="nw")
+
         import_button = Button(import_panel, text="Import .rpt file", command=self.import_file)
         import_button.pack(side=tk.LEFT, padx=5)
-        
+
+        self.input_file_path_field = Entry(import_panel, width=50)
+        self.input_file_path_field.pack(side=tk.LEFT, padx=5)
+                        
         # Tabbed pane
         tab_control = Notebook(self)
         tab_control.pack(expand=1, fill="both")
@@ -61,10 +61,11 @@ class GUIApplication(tk.Tk):
             tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i])
             tab_control.add(tab_content, text=f"Tab {i+1}")
             self.tab_contents.append(tab_content)
-        
+
         # Process button
         process_button = Button(self, text="Process", command=self.process_data)
-        process_button.pack(side=tk.BOTTOM, pady=10)
+        process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
+
 
     def import_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("RPT Files", "*.rpt")])
@@ -135,11 +136,11 @@ class TabContent(Frame):
         self.via_to_via_areas = []
 
         for i in range(3):
-            net_name_label = Label(self, text="輸入網絡名稱")
+            net_name_label = Label(self, text="輸入net name")
             net_name_label.grid(row=0, column=i*4, padx=5, pady=5, sticky='w')
             
             net_name_field = Entry(self)
-            net_name_field.grid(row=0, column=i*4+1, padx=5, pady=5, sticky='ew')
+            net_name_field.grid(row=0, column=i*4+1, padx=5, pady=5)
             if i == 0:
                 net_name_field.insert(0, default_net_name)
             elif i == 1:
@@ -151,25 +152,25 @@ class TabContent(Frame):
             # Add titles and ScrolledText widgets
             line_to_line_label = Label(self, text="Line to Line")
             line_to_line_label.grid(row=1, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_line_area = scrolledtext.ScrolledText(self, height=10, width=40)
+            line_to_line_area = scrolledtext.ScrolledText(self, height=10, width=60)
             line_to_line_area.grid(row=2, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_line_areas.append(line_to_line_area)
 
             line_to_via_label = Label(self, text="Line to VIA")
             line_to_via_label.grid(row=3, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_via_area = scrolledtext.ScrolledText(self, height=10, width=40)
+            line_to_via_area = scrolledtext.ScrolledText(self, height=10, width=60)
             line_to_via_area.grid(row=4, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_via_areas.append(line_to_via_area)
             
             line_to_shape_label = Label(self, text="Line to Shape")
             line_to_shape_label.grid(row=5, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_shape_area = scrolledtext.ScrolledText(self, height=10, width=40)
+            line_to_shape_area = scrolledtext.ScrolledText(self, height=10, width=60)
             line_to_shape_area.grid(row=6, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_shape_areas.append(line_to_shape_area)
 
             via_to_via_label = Label(self, text="VIA to VIA")
             via_to_via_label.grid(row=7, column=i*4, padx=5, pady=5, sticky='w')
-            via_to_via_area = scrolledtext.ScrolledText(self, height=10, width=40)
+            via_to_via_area = scrolledtext.ScrolledText(self, height=10, width=60)
             via_to_via_area.grid(row=8, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.via_to_via_areas.append(via_to_via_area)
             

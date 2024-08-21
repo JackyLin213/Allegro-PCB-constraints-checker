@@ -8,7 +8,7 @@ class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Impedance Checker V1.0")
-        self.geometry("935x600")
+        self.geometry("935x680")
         self.resizable(False, False)
         self.tab_contents = []
         
@@ -46,7 +46,7 @@ class GUIApplication(tk.Tk):
         
         # Process button
         process_button = Button(self, text="Process", command=self.process_data)
-        process_button.pack(side=tk.BOTTOM, pady=10)
+        process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
 
     def import_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("RPT Files", "*.rpt")])
@@ -132,7 +132,7 @@ class TabContent(Frame):
 
         for i in range(3):
             net_name_label = Label(self, text="輸入 net name")
-            net_name_label.grid(row=0, column=i*2, padx=5, pady=5)
+            net_name_label.grid(row=0, column=i*2, padx=5, pady=5, sticky='w')
             
             net_name_field = Entry(self)
             net_name_field.grid(row=0, column=i*2+1, padx=5, pady=5)
@@ -145,16 +145,24 @@ class TabContent(Frame):
             self.net_name_fields.append(net_name_field)
             
             impedance_label = Label(self, text="設定阻抗")
-            impedance_label.grid(row=1, column=i*2, padx=5, pady=5)
+            impedance_label.grid(row=1, column=i*2, padx=5, pady=5, sticky='w')
             
             impedance_field = Entry(self)
             impedance_field.grid(row=1, column=i*2+1, padx=5, pady=5)
             self.impedance_fields.append(impedance_field)
             
+            # PASS Label above match_area
+            pass_label = Label(self, text="PASS")
+            pass_label.grid(row=2, column=i*2, columnspan=2, padx=5, pady=5, sticky='w')
+
             match_area = scrolledtext.ScrolledText(self, height=15, width=40)
             match_area.grid(row=3, column=i*2, columnspan=2, padx=5, pady=5)
             self.match_areas.append(match_area)
-            
+
+            # FAIL Label above no_match_area
+            fail_label = Label(self, text="FAIL")
+            fail_label.grid(row=4, column=i*2, columnspan=2, padx=5, pady=5, sticky='w')
+
             no_match_area = scrolledtext.ScrolledText(self, height=15, width=40)
             no_match_area.grid(row=5, column=i*2, columnspan=2, padx=5, pady=5)
             self.no_match_areas.append(no_match_area)
