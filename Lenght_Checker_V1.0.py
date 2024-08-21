@@ -14,13 +14,13 @@ class GUIApplication(tk.Tk):
         
         # File import panel
         import_panel = Frame(self)
-        import_panel.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
-        
-        self.input_file_path_field = Entry(import_panel, width=50)
-        self.input_file_path_field.pack(side=tk.LEFT, padx=5)
-        
+        import_panel.pack(side=tk.TOP, padx=0, pady=10, anchor="nw")
+
         import_button = Button(import_panel, text="Import .rpt file", command=self.import_file)
         import_button.pack(side=tk.LEFT, padx=5)
+
+        self.input_file_path_field = Entry(import_panel, width=50)
+        self.input_file_path_field.pack(side=tk.LEFT, padx=5)
         
         # Tabbed pane
         tab_control = Notebook(self)
