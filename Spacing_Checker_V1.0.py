@@ -25,8 +25,8 @@ class Utils:
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Impedance Checker V1.0")
-        self.geometry("1280x800")
+        self.title("Spacing Checker V1.0")
+        self.geometry("1280x750")
         #self.resizable(False, False)
         self.tab_contents = []
         
