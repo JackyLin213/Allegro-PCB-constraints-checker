@@ -197,7 +197,7 @@ class TabContent(Frame):
                     all_list.append(parts)
                     
                     if pattern_second_line.match(second_line):
-                        if third_line.startswith(target_third_line):
+                        if any(char in third_line for char in target_third_line):
                             match_list.append(second_line)
                         else:
                             no_match_list.append([parts[1], parts[2]])
