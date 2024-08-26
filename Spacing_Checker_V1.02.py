@@ -56,9 +56,13 @@ class GUIApplication(tk.Tk):
             "*SFP*_*X*", "*USB4*_*X*", "", "",
             "", "", "", ""
         ]
+        predefined_net_names4 = [
+            "", "", "", "",
+            "", "", "", ""
+        ]
         
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i])
+            tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
             tab_control.add(tab_content, text=f"Tab {i+1}")
             self.tab_contents.append(tab_content)
 
@@ -126,7 +130,7 @@ class GUIApplication(tk.Tk):
 
 
 class TabContent(Frame):
-    def __init__(self, parent, default_net_name, default_net_name2, default_net_name3):
+    def __init__(self, parent, default_net_name, default_net_name2, default_net_name3, default_net_name4):
         super().__init__(parent)
         
         self.net_name_fields = []
@@ -135,7 +139,7 @@ class TabContent(Frame):
         self.line_to_shape_areas = []
         self.via_to_via_areas = []
 
-        for i in range(3):
+        for i in range(4):
             net_name_label = Label(self, text="輸入net name")
             net_name_label.grid(row=0, column=i*4, padx=5, pady=5, sticky='w')
             
@@ -147,6 +151,8 @@ class TabContent(Frame):
                 net_name_field.insert(0, default_net_name2)
             elif i == 2:
                 net_name_field.insert(0, default_net_name3)
+            elif i == 3:
+                net_name_field.insert(0, default_net_name4)
             self.net_name_fields.append(net_name_field)
             
             # Add titles and ScrolledText widgets
@@ -180,7 +186,7 @@ class TabContent(Frame):
             self.grid_columnconfigure(i*4+3, weight=1)
 
     def process_tab(self, file_path):
-        for i in range(3):
+        for i in range(4):
             target_net_name = self.net_name_fields[i].get()
             line_to_line_list = []
             line_to_via_list = []

@@ -7,8 +7,8 @@ import re
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Impedance Checker V1.0")
-        self.geometry("935x680")
+        self.title("Length Checker V1.0")
+        self.geometry("1250x680")
         self.resizable(False, False)
         self.tab_contents = []
         
@@ -38,9 +38,13 @@ class GUIApplication(tk.Tk):
             "*SFP*_*X*", "*USB4*_*X*", "", "",
             "", "", "", ""
         ]
+        predefined_net_names4 = [
+            "", "", "", "",
+            "", "", "", ""
+        ]
         
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i])
+            tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
             tab_control.add(tab_content, text=f"Tab {i+1}")
             self.tab_contents.append(tab_content)
         
@@ -97,7 +101,7 @@ class GUIApplication(tk.Tk):
     def extract_values(self, line):
         parts = re.split(r'\s+', line.strip())
         if len(parts) >= 4:
-            return [parts[0], parts[2], parts[3]]
+            return [parts[0], parts[2], parts[7]]
         return None
     
     def add_unique(self, data_list, new_item):
@@ -122,7 +126,7 @@ class GUIApplication(tk.Tk):
 
 
 class TabContent(Frame):
-    def __init__(self, parent, default_net_name, default_net_name2, default_net_name3):
+    def __init__(self, parent, default_net_name, default_net_name2, default_net_name3, default_net_name4):
         super().__init__(parent)
         
         self.net_name_fields = []
@@ -130,7 +134,7 @@ class TabContent(Frame):
         self.match_areas = []
         self.no_match_areas = []
 
-        for i in range(3):
+        for i in range(4):
             net_name_label = Label(self, text="輸入 net name")
             net_name_label.grid(row=0, column=i*2, padx=5, pady=5, sticky='w')
             
@@ -142,9 +146,11 @@ class TabContent(Frame):
                 net_name_field.insert(0, default_net_name2)
             elif i == 2:
                 net_name_field.insert(0, default_net_name3)
+            elif i == 3:
+                net_name_field.insert(0, default_net_name4)
             self.net_name_fields.append(net_name_field)
             
-            impedance_label = Label(self, text="設定阻抗")
+            impedance_label = Label(self, text="設定線長")
             impedance_label.grid(row=1, column=i*2, padx=5, pady=5, sticky='w')
             
             impedance_field = Entry(self)
@@ -170,7 +176,7 @@ class TabContent(Frame):
 
 
     def process_tab(self, file_path):
-        for i in range(3):
+        for i in range(4):
             target_second_line = self.net_name_fields[i].get()
             target_third_line = self.impedance_fields[i].get()
             match_list = []
@@ -197,7 +203,7 @@ class TabContent(Frame):
                     all_list.append(parts)
                     
                     if pattern_second_line.match(second_line):
-                        if any(char in third_line for char in target_third_line):
+                        if target_third_line and target_third_line in third_line:
                             match_list.append(second_line)
                         else:
                             no_match_list.append([parts[1], parts[2]])
