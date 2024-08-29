@@ -1,0 +1,48 @@
+Tab 3 Report
+
+
+*MDI*:10000
+
+No Match List:
+LAN_MDI_0_DN,-
+LAN_MDI_0_DP,-
+LAN_MDI_1_DN,-
+LAN_MDI_1_DP,-
+LAN_MDI_2_DN,-
+LAN_MDI_2_DP,-
+LAN_MDI_3_DN,-
+LAN_MDI_3_DP,-
+MDI_AQC1_A_N,-
+MDI_AQC1_A_P,-
+MDI_AQC1_B_N,-
+MDI_AQC1_B_P,-
+MDI_AQC1_C_N,-
+MDI_AQC1_C_P,-
+MDI_AQC1_D_N,-
+MDI_AQC1_D_P,-
+MDI_AQC2_A_N,-
+MDI_AQC2_A_P,-
+MDI_AQC2_B_N,-
+MDI_AQC2_B_P,-
+MDI_AQC2_C_N,-
+MDI_AQC2_C_P,-
+MDI_AQC2_D_N,-
+MDI_AQC2_D_P,-
+
+*KR*_*X*:10000
+
+No Match List:
+No mismatches found.
+
+
+:
+
+No Match List:
+No mismatches found.
+
+
+:
+
+No Match List:
+No mismatches found.
+

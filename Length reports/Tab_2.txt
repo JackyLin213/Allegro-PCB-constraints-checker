@@ -1,0 +1,36 @@
+Tab 2 Report
+
+
+*USB2*_D*:10000
+
+No Match List:
+USB2_PCH_P0_DN,-
+USB2_PCH_P0_DP,-
+USB2_PCH_P1_DN,-
+USB2_PCH_P1_DP,-
+USB2_PCH_P1_R_DN,-
+USB2_PCH_P1_R_DP,-
+
+*USB3*_*X*:10000
+
+No Match List:
+USB3_PCH_TX2_C_DN,-
+USB3_PCH_TX2_C_DP,-
+USB3_PCH_TX3_C_DN,-
+USB3_PCH_TX3_C_DP,-
+USB3_TX2_R_N,-
+USB3_TX2_R_P,-
+USB3_TX3_R_N,-
+USB3_TX3_R_P,-
+
+*USB4*_*X*:10000
+
+No Match List:
+No mismatches found.
+
+
+:
+
+No Match List:
+No mismatches found.
+
