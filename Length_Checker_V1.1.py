@@ -83,7 +83,7 @@ class GUIApplication(tk.Tk):
     
     def combine_reports(self):
         save_directory = os.path.join(os.getcwd(), "Length reports")
-        combined_report_path = os.path.join(save_directory, "combined_report.txt")
+        combined_report_path = os.path.join(save_directory, "combined_length__report.txt")
 
         try:
             with open(combined_report_path, "w", encoding="utf-8") as combined_file:
@@ -120,7 +120,7 @@ class GUIApplication(tk.Tk):
         with open(output_file_path, "w", encoding="utf-8") as file:
             for values in data:
                 file.write(",".join(values) + "\n")
-            print("Data extracted and written to text file successfully.")
+            #print("Data extracted and written to text file successfully.")
     
     def extract_values(self, line):
         parts = re.split(r'\s+', line.strip())
