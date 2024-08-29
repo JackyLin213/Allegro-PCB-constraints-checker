@@ -90,12 +90,33 @@ class GUIApplication(tk.Tk):
         
         try:
             self.convert_rpt_to_txt(input_file_path, output_file_path)
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error converting file: {ex}")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error converting file: {e}")
             return
         
         for i, tab_content in enumerate(self.tab_contents):
             tab_content.process_tab(output_file_path, self.tab_names[i])
+        
+        self.combine_reports()  # 在處理完所有 tab 後自動整合報告
+    
+    def combine_reports(self):
+        save_directory = os.path.join(os.getcwd(), "Spacing reports")
+        combined_report_path = os.path.join(save_directory, "combined_report.txt")
+
+        try:
+            with open(combined_report_path, "w", encoding="utf-8") as combined_file:
+                for i in range(1, 9):  # 處理 Tab 1 到 Tab 8
+                    tab_filename = f"Tab_{i}.txt"
+                    tab_filepath = os.path.join(save_directory, tab_filename)
+                
+                    if os.path.exists(tab_filepath):
+                        with open(tab_filepath, "r", encoding="utf-8") as tab_file:
+                            combined_file.write(tab_file.read())
+                            combined_file.write("\n\n")  # 在每個報告之間添加分隔
+                            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error combining reports: {e}")
 
     def convert_rpt_to_txt(self, input_file_path, output_file_path):
         data = []
@@ -212,8 +233,8 @@ class TabContent(Frame):
                 all_line_to_shape_lists.append(line_to_shape_list)
                 all_via_to_via_lists.append(via_to_via_list)
 
-            except Exception as ex:
-                messagebox.showerror("Error", f"Error processing file: {ex}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error processing file: {e}")
 
         self.output_report(all_line_to_line_lists, all_line_to_via_lists, all_line_to_shape_lists, all_via_to_via_lists, tab_name)
 
@@ -248,6 +269,7 @@ class TabContent(Frame):
             try:
                 with open(save_path, "w", encoding="utf-8") as f:
                     f.write(report_content)
+
                 #messagebox.showinfo("Success", "Report saved successfully!")
             except Exception as e:
                 messagebox.showerror("Error", f"Error saving report: {e}")
