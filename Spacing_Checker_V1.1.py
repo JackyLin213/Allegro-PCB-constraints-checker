@@ -88,7 +88,6 @@ class GUIApplication(tk.Tk):
             messagebox.showwarning("Warning", "Please select a file.")
             return
         
-        
         try:
             self.convert_rpt_to_txt(input_file_path, output_file_path)
         except Exception as ex:
@@ -194,7 +193,6 @@ class TabContent(Frame):
         all_line_to_shape_lists = []
         all_via_to_via_lists = []
 
-
         for i in range(4):
             target_net_name = self.net_name_fields[i].get()
             line_to_line_list = []
@@ -224,7 +222,6 @@ class TabContent(Frame):
 
         for i in range(4):
             report_content += f"\n{self.net_name_fields[i].get()}:\n\n"
-                        
             report_content += "【Line_to_Line】\n"
             if all_line_to_line_lists[i]:
                 for item in all_line_to_line_lists[i]:
