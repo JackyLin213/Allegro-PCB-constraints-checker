@@ -27,7 +27,7 @@ class GUIApplication(tk.Tk):
         tab_control = Notebook(self)
         tab_control.pack(expand=1, fill="both")
         
-        predefined_net_names = [
+        predefined_net_names1 = [
             "*PCIE*_*X*", "*USB2*_D*", "*MDI*",
             "*SATA*_*X*", "CLK*", "*I2C*_*SDA*", "*SMB*_*SDA*", ""
         ]
@@ -44,10 +44,11 @@ class GUIApplication(tk.Tk):
             "", "", "", ""
         ]
         
+        # 定義出 8 個 tab，並分別帶入預設net name
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
+            tab_content = TabContent(self, predefined_net_names1[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
             tab_name = f"Tab {i+1}"
-            tab_control.add(tab_content, text=f"Tab {i+1}")
+            tab_control.add(tab_content, text=tab_name)
             self.tab_contents.append(tab_content)
             self.tab_names.append(tab_name)
 
@@ -87,8 +88,8 @@ class GUIApplication(tk.Tk):
 
         try:
             with open(combined_report_path, "w", encoding="utf-8") as combined_file:
-                for i in range(1, 9):  # 處理 Tab 1 到 Tab 8
-                    tab_filename = f"Tab_{i}.txt"
+                for i in range(8):  # 處理 Tab 1 到 Tab 8
+                    tab_filename = f"Tab_{i+1}.txt"
                     tab_filepath = os.path.join(save_directory, tab_filename)
                 
                     if os.path.exists(tab_filepath):

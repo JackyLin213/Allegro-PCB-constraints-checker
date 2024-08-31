@@ -43,7 +43,7 @@ CLK_PCIE_AQC2_DP,-
 CLK_PCIE_AQC2_R_DN,-
 CLK_PCIE_AQC2_R_DP,-
 
-CK*:10000
+:
 
 【No Match List】
 No mismatches found.
