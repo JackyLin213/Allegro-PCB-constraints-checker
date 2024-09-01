@@ -1,7 +1,7 @@
 Tab 4 Report
 
 
-*SATA*_*X*:10000
+*SATA*_*X*:
 
 【No Match List】
 SATA_JMB_EXT_RX0_C_DN,-
@@ -141,7 +141,7 @@ SATA_TX8_R_DP,-
 SATA_TX9_R_DN,-
 SATA_TX9_R_DP,-
 
-*SAS*:10000
+*SAS*:
 
 【No Match List】
 No mismatches found.

@@ -146,7 +146,7 @@ class GUIApplication(tk.Tk):
         
         with open(output_file_path, "w", encoding="utf-8") as file:
             for values in data:
-                file.write(",".join(values) + "\n")
+                file.write(",".join(values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
             # print("Data extracted and written to text file successfully.")
     
     @staticmethod
@@ -163,7 +163,7 @@ class GUIApplication(tk.Tk):
 
 
 class TabContent(Frame):
-    def __init__(self, parent, default_net_name, default_net_name2, default_net_name3, default_net_name4):
+    def __init__(self, parent, default_net_name1, default_net_name2, default_net_name3, default_net_name4):
         super().__init__(parent)
         
         self.net_name_fields = []
@@ -179,7 +179,7 @@ class TabContent(Frame):
             net_name_field = Entry(self)
             net_name_field.grid(row=0, column=i*4+1, padx=5, pady=5)
             if i == 0:
-                net_name_field.insert(0, default_net_name)
+                net_name_field.insert(0, default_net_name1)
             elif i == 1:
                 net_name_field.insert(0, default_net_name2)
             elif i == 2:
