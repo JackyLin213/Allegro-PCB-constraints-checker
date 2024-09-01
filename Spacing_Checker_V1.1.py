@@ -4,6 +4,7 @@ from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
 import re 
 
+
 class Utils:
     @staticmethod
     def wildcard_to_regex(wildcard):
@@ -21,13 +22,14 @@ class Utils:
                 regex += char
         regex += "$"
         return regex
-    
+
+
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Spacing Checker V1.1")
         self.geometry("1280x850")
-        #self.resizable(False, False)
+        # self.resizable(False, False)
         self.tab_contents = []
         self.tab_names = []
         
@@ -64,7 +66,12 @@ class GUIApplication(tk.Tk):
         
         # 定義出 8 個 tab，並分別帶入預設net name
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names1[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
+            tab_content = TabContent(self,
+                                     predefined_net_names1[i],
+                                     predefined_net_names2[i],
+                                     predefined_net_names3[i],
+                                     predefined_net_names4[i]
+                                     )
             tab_name = f"Tab {i+1}"
             tab_control.add(tab_content, text=tab_name)
             self.tab_contents.append(tab_content)
@@ -73,7 +80,6 @@ class GUIApplication(tk.Tk):
         # Process button
         process_button = Button(self, text="Process", command=self.process_data)
         process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
-
 
     def import_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("RPT Files", "*.rpt")])
@@ -101,7 +107,8 @@ class GUIApplication(tk.Tk):
         
         self.combine_reports()  # 在處理完所有 tab 後自動整合報告
     
-    def combine_reports(self):
+    @staticmethod
+    def combine_reports():
         save_directory = os.path.join(os.getcwd(), "Spacing reports")
         combined_report_path = os.path.join(save_directory, "combined_spacing__report.txt")
 
@@ -140,15 +147,17 @@ class GUIApplication(tk.Tk):
         with open(output_file_path, "w", encoding="utf-8") as file:
             for values in data:
                 file.write(",".join(values) + "\n")
-            #print("Data extracted and written to text file successfully.")
+            # print("Data extracted and written to text file successfully.")
     
-    def extract_values(self, line):
+    @staticmethod
+    def extract_values(line):
         parts = re.split(r'\s+', line.strip())
         if len(parts) >= 52:
             return [parts[0], parts[2], parts[5], parts[9], parts[12], parts[51]]
         return None
-    
-    def add_unique(self, data_list, new_item):
+
+    @staticmethod
+    def add_unique(data_list, new_item):
         if new_item not in data_list:
             data_list.append(new_item)
 
@@ -223,7 +232,13 @@ class TabContent(Frame):
             via_to_via_list = []
 
             try:
-                self.process_file(file_path, target_net_name, line_to_line_list, line_to_via_list, line_to_shape_list, via_to_via_list)
+                self.process_file(file_path,
+                                  target_net_name,
+                                  line_to_line_list,
+                                  line_to_via_list,
+                                  line_to_shape_list,
+                                  via_to_via_list
+                                  )
                 self.display_results(line_to_line_list, self.line_to_line_areas[i])
                 self.display_results(line_to_via_list, self.line_to_via_areas[i])
                 self.display_results(line_to_shape_list, self.line_to_shape_areas[i])
@@ -237,9 +252,20 @@ class TabContent(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
 
-        self.output_report(all_line_to_line_lists, all_line_to_via_lists, all_line_to_shape_lists, all_via_to_via_lists, tab_name)
+        self.output_report(all_line_to_line_lists,
+                           all_line_to_via_lists,
+                           all_line_to_shape_lists,
+                           all_via_to_via_lists,
+                           tab_name
+                           )
 
-    def output_report(self, all_line_to_line_lists, all_line_to_via_lists, all_line_to_shape_lists, all_via_to_via_lists, tab_name):
+    def output_report(self,
+                      all_line_to_line_lists,
+                      all_line_to_via_lists,
+                      all_line_to_shape_lists,
+                      all_via_to_via_lists,
+                      tab_name
+                      ):
         report_content = f"{tab_name} Report\n\n"
 
         for i in range(4):
@@ -271,19 +297,25 @@ class TabContent(Frame):
                 with open(save_path, "w", encoding="utf-8") as f:
                     f.write(report_content)
 
-                #messagebox.showinfo("Success", "Report saved successfully!")
+                # messagebox.showinfo("Success", "Report saved successfully!")
             except Exception as e:
                 messagebox.showerror("Error", f"Error saving report: {e}")
     
-    def process_file(self, file_path, target_net_name, line_to_line_list, line_to_via_list, line_to_shape_list, via_to_via_list):
-        regex_target_net_name = Utils.wildcard_to_regex(target_net_name)
-        pattern_target_net_name = re.compile(regex_target_net_name)
+    @staticmethod
+    def process_file(file_path,
+                     target_net_name,
+                     line_to_line_list,
+                     line_to_via_list,
+                     line_to_shape_list,
+                     via_to_via_list
+                     ):
+        regex_target_net_name = Utils.wildcard_to_regex(target_net_name)  # 將輸入的net name轉成regex type
 
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
-                parts = line.strip().split(",")
-                if len(parts) >= 6 and parts[0] == "Net":
-                    if pattern_target_net_name.match(parts[1]):
+                parts = line.strip().split(",")  # 將file內的data依","方式做split
+                if len(parts) >= 6 and parts[0] == "Net":  # 假如split後有6個part，且part[0] = NET，則繼續
+                    if re.match(regex_target_net_name, parts[1]):  # 將regex_second_line和parts[1]做match
                         line_to_line_list.append(f"{parts[1]},{parts[2]}")
                         line_to_via_list.append(f"{parts[1]},{parts[3]}")
                         line_to_shape_list.append(f"{parts[1]},{parts[4]}")
@@ -295,7 +327,8 @@ class TabContent(Frame):
         line_to_shape_list.sort()
         via_to_via_list.sort()
 
-    def display_results(self, result_list, text_area):
+    @staticmethod
+    def display_results(result_list, text_area):
         text_area.delete(1.0, tk.END)
         for item in result_list:
             text_area.insert(tk.END, item + "\n")

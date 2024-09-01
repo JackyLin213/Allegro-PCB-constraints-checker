@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
 from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
-import re
+import re  # import regex expression
+
 
 class GUIApplication(tk.Tk):
     def __init__(self):
@@ -43,11 +44,16 @@ class GUIApplication(tk.Tk):
             "", "", "", "",
             "", "", "", ""
         ]
-        
+
         # 定義出 8 個 tab，並分別帶入預設net name
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names1[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
-            tab_name = f"Tab {i+1}"
+            tab_content = TabContent(self,
+                                     predefined_net_names1[i],
+                                     predefined_net_names2[i],
+                                     predefined_net_names3[i],
+                                     predefined_net_names4[i]
+                                     )
+            tab_name = f"Tab {i + 1}"
             tab_control.add(tab_content, text=tab_name)
             self.tab_contents.append(tab_content)
             self.tab_names.append(tab_name)
@@ -79,24 +85,25 @@ class GUIApplication(tk.Tk):
 
         for i, tab_content in enumerate(self.tab_contents):
             tab_content.process_tab(output_file_path, self.tab_names[i])
-        
+
         self.combine_reports()  # 在處理完所有 tab 後自動整合報告
-    
-    def combine_reports(self):
+
+    @staticmethod
+    def combine_reports():
         save_directory = os.path.join(os.getcwd(), "Impedance reports")
         combined_report_path = os.path.join(save_directory, "combined_impedance_report.txt")
 
         try:
             with open(combined_report_path, "w", encoding="utf-8") as combined_file:
                 for i in range(8):  # 處理 Tab 1 到 Tab 8
-                    tab_filename = f"Tab_{i+1}.txt"
+                    tab_filename = f"Tab_{i + 1}.txt"
                     tab_filepath = os.path.join(save_directory, tab_filename)
-                
+
                     if os.path.exists(tab_filepath):
                         with open(tab_filepath, "r", encoding="utf-8") as tab_file:
                             combined_file.write(tab_file.read())
                             combined_file.write("\n\n")  # 在每個報告之間添加分隔
-                            
+
         except Exception as e:
             messagebox.showerror("Error", f"Error combining reports: {e}")
 
@@ -121,15 +128,17 @@ class GUIApplication(tk.Tk):
         with open(output_file_path, "w", encoding="utf-8") as file:
             for values in data:
                 file.write(",".join(values) + "\n")
-            #print("Data extracted and written to text file successfully.")
+            # print("Data extracted and written to text file successfully.")
 
-    def extract_values(self, line):
+    @staticmethod
+    def extract_values(line):
         parts = re.split(r'\s+', line.strip())
         if len(parts) >= 4:
             return [parts[0], parts[2], parts[3]]
         return None
 
-    def add_unique(self, data_list, new_item):
+    @staticmethod
+    def add_unique(data_list, new_item):
         if new_item not in data_list:
             data_list.append(new_item)
 
@@ -161,10 +170,10 @@ class TabContent(Frame):
 
         for i in range(4):
             net_name_label = Label(self, text="輸入 net name")
-            net_name_label.grid(row=0, column=i*2, padx=5, pady=5, sticky='w')
+            net_name_label.grid(row=0, column=i * 2, padx=5, pady=5, sticky='w')
 
             net_name_field = Entry(self)
-            net_name_field.grid(row=0, column=i*2+1, padx=5, pady=5)
+            net_name_field.grid(row=0, column=i * 2 + 1, padx=5, pady=5)
             if i == 0:
                 net_name_field.insert(0, default_net_name)
             elif i == 1:
@@ -176,26 +185,26 @@ class TabContent(Frame):
             self.net_name_fields.append(net_name_field)
 
             impedance_label = Label(self, text="設定阻抗")
-            impedance_label.grid(row=1, column=i*2, padx=5, pady=5, sticky='w')
+            impedance_label.grid(row=1, column=i * 2, padx=5, pady=5, sticky='w')
 
             impedance_field = Entry(self)
-            impedance_field.grid(row=1, column=i*2+1, padx=5, pady=5)
+            impedance_field.grid(row=1, column=i * 2 + 1, padx=5, pady=5)
             self.impedance_fields.append(impedance_field)
 
             # PASS Label above match_area
             pass_label = Label(self, text="PASS")
-            pass_label.grid(row=2, column=i*2, columnspan=2, padx=5, pady=5, sticky='w')
+            pass_label.grid(row=2, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
 
             match_area = scrolledtext.ScrolledText(self, height=15, width=40)
-            match_area.grid(row=3, column=i*2, columnspan=2, padx=5, pady=5)
+            match_area.grid(row=3, column=i * 2, columnspan=2, padx=5, pady=5)
             self.match_areas.append(match_area)
 
             # FAIL Label above no_match_area
             fail_label = Label(self, text="FAIL")
-            fail_label.grid(row=4, column=i*2, columnspan=2, padx=5, pady=5, sticky='w')
+            fail_label.grid(row=4, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
 
             no_match_area = scrolledtext.ScrolledText(self, height=15, width=40)
-            no_match_area.grid(row=5, column=i*2, columnspan=2, padx=5, pady=5)
+            no_match_area.grid(row=5, column=i * 2, columnspan=2, padx=5, pady=5)
             self.no_match_areas.append(no_match_area)
 
     def process_tab(self, file_path, tab_name):
@@ -225,13 +234,11 @@ class TabContent(Frame):
 
         for i in range(4):
             report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"
-            """
-            report_content += "Match List:\n"
-            if all_match_lists[i]:
-                report_content += "\n".join(all_match_lists[i]) + "\n\n"
-            else:
-                report_content += "No matches found.\n\n"
-            """
+            # report_content += "Match List:\n"
+            # if all_match_lists[i]:
+            #     report_content += "\n".join(all_match_lists[i]) + "\n\n"
+            # else:
+            #     report_content += "No matches found.\n\n"
             report_content += "【No Match List】\n"
             if all_no_match_lists[i]:
                 for item in all_no_match_lists[i]:
@@ -249,27 +256,20 @@ class TabContent(Frame):
                 with open(save_path, "w", encoding="utf-8") as f:
                     f.write(report_content)
 
-                #messagebox.showinfo("Success", "Report saved successfully!")
+                # messagebox.showinfo("Success", "Report saved successfully!")
             except Exception as e:
                 messagebox.showerror("Error", f"Error saving report: {e}")
-    
-    def process_file(self, file_path, target_second_line, target_third_line, match_list, no_match_list):
-        all_list = []
 
-        regex_second_line = self.master.wildcard_to_regex(target_second_line)
-        pattern_second_line = re.compile(regex_second_line)
+    def process_file(self, file_path, target_second_line, target_third_line, match_list, no_match_list):
+        regex_second_line = self.master.wildcard_to_regex(target_second_line)  # 將輸入的net name轉成regex type
 
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
-                parts = line.strip().split(",")
-                if len(parts) == 3 and parts[0] == "Net":
-                    second_line = parts[1]
-                    third_line = parts[2]
-                    all_list.append(parts)
-
-                    if pattern_second_line.match(second_line):
-                        if target_third_line and target_third_line in third_line:
-                            match_list.append(second_line)
+                parts = line.strip().split(",")  # 將file內的data依","方式做split
+                if len(parts) == 3 and parts[0] == "Net":  # 假如split後有3個part，且part[0] = NET，則繼續
+                    if re.match(regex_second_line, parts[1]):  # 將regex_second_line和parts[1]做match
+                        if target_third_line and target_third_line in parts[2]:
+                            match_list.append(parts[1])
                         else:
                             no_match_list.append([parts[1], parts[2]])
 
@@ -277,7 +277,8 @@ class TabContent(Frame):
         match_list.sort()
         no_match_list.sort()
 
-    def display_results(self, match_list, match_area, no_match_list, no_match_area):
+    @staticmethod
+    def display_results(match_list, match_area, no_match_list, no_match_area):
         match_area.delete(1.0, tk.END)
         no_match_area.delete(1.0, tk.END)
 

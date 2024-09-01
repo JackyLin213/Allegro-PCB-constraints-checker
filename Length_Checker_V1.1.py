@@ -4,6 +4,7 @@ from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
 import re
 
+
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -46,7 +47,12 @@ class GUIApplication(tk.Tk):
         
         # 定義出 8 個 tab，並分別帶入預設net name
         for i in range(8):
-            tab_content = TabContent(self, predefined_net_names1[i], predefined_net_names2[i], predefined_net_names3[i], predefined_net_names4[i])
+            tab_content = TabContent(self,
+                                     predefined_net_names1[i],
+                                     predefined_net_names2[i],
+                                     predefined_net_names3[i],
+                                     predefined_net_names4[i]
+                                     )
             tab_name = f"Tab {i+1}"
             tab_control.add(tab_content, text=tab_name)
             self.tab_contents.append(tab_content)
@@ -81,8 +87,9 @@ class GUIApplication(tk.Tk):
             tab_content.process_tab(output_file_path, self.tab_names[i])
         
         self.combine_reports()  # 在處理完所有 tab 後自動整合報告
-    
-    def combine_reports(self):
+
+    @staticmethod
+    def combine_reports():
         save_directory = os.path.join(os.getcwd(), "Length reports")
         combined_report_path = os.path.join(save_directory, "combined_length__report.txt")
 
@@ -121,15 +128,17 @@ class GUIApplication(tk.Tk):
         with open(output_file_path, "w", encoding="utf-8") as file:
             for values in data:
                 file.write(",".join(values) + "\n")
-            #print("Data extracted and written to text file successfully.")
-    
-    def extract_values(self, line):
+            # print("Data extracted and written to text file successfully.")
+
+    @staticmethod
+    def extract_values(line):
         parts = re.split(r'\s+', line.strip())
         if len(parts) >= 4:
             return [parts[0], parts[2], parts[7]]
         return None
-    
-    def add_unique(self, data_list, new_item):
+
+    @staticmethod
+    def add_unique(data_list, new_item):
         if new_item not in data_list:
             data_list.append(new_item)
     
@@ -225,13 +234,11 @@ class TabContent(Frame):
 
         for i in range(4):
             report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"
-            """
-            report_content += "Match List:\n"
-            if all_match_lists[i]:
-                report_content += "\n".join(all_match_lists[i]) + "\n\n"
-            else:
-                report_content += "No matches found.\n\n"
-            """            
+            # report_content += "Match List:\n"
+            # if all_match_lists[i]:
+            #     report_content += "\n".join(all_match_lists[i]) + "\n\n"
+            # else:
+            #     report_content += "No matches found.\n\n"
             report_content += "【No Match List】\n"
             if all_no_match_lists[i]:
                 for item in all_no_match_lists[i]:
@@ -249,27 +256,20 @@ class TabContent(Frame):
                 with open(save_path, "w", encoding="utf-8") as f:
                     f.write(report_content)
 
-                #messagebox.showinfo("Success", "Report saved successfully!")
+                # messagebox.showinfo("Success", "Report saved successfully!")
             except Exception as e:
                 messagebox.showerror("Error", f"Error saving report: {e}")
     
     def process_file(self, file_path, target_second_line, target_third_line, match_list, no_match_list):
-        all_list = []
-        
-        regex_second_line = self.master.wildcard_to_regex(target_second_line)
-        pattern_second_line = re.compile(regex_second_line)
+        regex_second_line = self.master.wildcard_to_regex(target_second_line)  # 將輸入的net name轉成regex type
 
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
-                parts = line.strip().split(",")
-                if len(parts) == 3 and parts[0] == "Net":
-                    second_line = parts[1]
-                    third_line = parts[2]
-                    all_list.append(parts)
-                    
-                    if pattern_second_line.match(second_line):
-                        if target_third_line and target_third_line in third_line:
-                            match_list.append(second_line)
+                parts = line.strip().split(",")  # 將file內的data依","方式做split
+                if len(parts) == 3 and parts[0] == "Net":  # 假如split後有3個part，且part[0] = NET，則繼續
+                    if re.match(regex_second_line, parts[1]):  # 將regex_second_line和parts[1]做match
+                        if target_third_line and target_third_line in parts[2]:
+                            match_list.append(parts[1])
                         else:
                             no_match_list.append([parts[1], parts[2]])
 
@@ -277,7 +277,8 @@ class TabContent(Frame):
         match_list.sort()
         no_match_list.sort()
         
-    def display_results(self, match_list, match_area, no_match_list, no_match_area):
+    @staticmethod
+    def display_results(match_list, match_area, no_match_list, no_match_area):
         match_area.delete(1.0, tk.END)
         no_match_area.delete(1.0, tk.END)
         
