@@ -133,7 +133,7 @@ class GUIApplication(tk.Tk):
     @staticmethod
     def extract_values(line):
         parts = re.split(r'\s+', line.strip())  # 將file內的data依","方式做split
-        if len(parts) >= 4:   # 假如split後有4個parts
+        if len(parts) >= 4:  # 假如split後有4個parts
             return [parts[0], parts[2], parts[3]]  # 則return指定位置part[]
         return None
 
