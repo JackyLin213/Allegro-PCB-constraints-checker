@@ -1,7 +1,7 @@
 Tab 1 Report
 
 
-*PCIE*_*X*:
+*PCIE*_*X*:10000
 
 【No Match List】
 PCIE2_PCH_LAN_RX0_C_DN,-
@@ -137,13 +137,13 @@ PCIE4_PCH_M2_SLOT2_TX2_DP,-
 PCIE4_PCH_M2_SLOT2_TX3_DN,-
 PCIE4_PCH_M2_SLOT2_TX3_DP,-
 
-*PE*_*X*:
+*PE*_*X*:10000
 
 【No Match List】
 No mismatches found.
 
 
-*SFP*_*X*:
+*SFP*_*X*:10000
 
 【No Match List】
 No mismatches found.
@@ -159,49 +159,29 @@ No mismatches found.
 Tab 2 Report
 
 
-*USB2*_D*:
+*USB2*_D*:10000
 
 【No Match List】
-USB2_P2_DN,10000.000
-USB2_P2_DP,10000.000
-USB2_P3_DN,10000.000
-USB2_P3_DP,10000.000
 USB2_PCH_P0_DN,-
 USB2_PCH_P0_DP,-
 USB2_PCH_P1_DN,-
 USB2_PCH_P1_DP,-
 USB2_PCH_P1_R_DN,-
 USB2_PCH_P1_R_DP,-
-USB2_PCH_P2_DN,10000.000
-USB2_PCH_P2_DP,10000.000
-USB2_PCH_P3_DN,10000.000
-USB2_PCH_P3_DP,10000.000
 
-*USB3*_*X*:
+*USB3*_*X*:10000
 
 【No Match List】
-USB3_PCH_RX2_DN,10000.000
-USB3_PCH_RX2_DP,10000.000
-USB3_PCH_RX3_DN,10000.000
-USB3_PCH_RX3_DP,10000.000
 USB3_PCH_TX2_C_DN,-
 USB3_PCH_TX2_C_DP,-
-USB3_PCH_TX2_DN,10000.000
-USB3_PCH_TX2_DP,10000.000
 USB3_PCH_TX3_C_DN,-
 USB3_PCH_TX3_C_DP,-
-USB3_PCH_TX3_DN,10000.000
-USB3_PCH_TX3_DP,10000.000
-USB3_RX2_R_N,10000.000
-USB3_RX2_R_P,10000.000
-USB3_RX3_R_N,10000.000
-USB3_RX3_R_P,10000.000
 USB3_TX2_R_N,-
 USB3_TX2_R_P,-
 USB3_TX3_R_N,-
 USB3_TX3_R_P,-
 
-*USB4*_*X*:
+*USB4*_*X*:10000
 
 【No Match List】
 No mismatches found.
@@ -217,7 +197,7 @@ No mismatches found.
 Tab 3 Report
 
 
-*MDI*:
+*MDI*:10000
 
 【No Match List】
 LAN_MDI_0_DN,-
@@ -245,7 +225,7 @@ MDI_AQC2_C_P,-
 MDI_AQC2_D_N,-
 MDI_AQC2_D_P,-
 
-*KR*_*X*:
+*KR*_*X*:10000
 
 【No Match List】
 No mismatches found.
@@ -267,7 +247,7 @@ No mismatches found.
 Tab 4 Report
 
 
-*SATA*_*X*:
+*SATA*_*X*:10000
 
 【No Match List】
 SATA_JMB_EXT_RX0_C_DN,-
@@ -407,7 +387,7 @@ SATA_TX8_R_DP,-
 SATA_TX9_R_DN,-
 SATA_TX9_R_DP,-
 
-*SAS*:
+*SAS*:10000
 
 【No Match List】
 No mismatches found.
@@ -429,7 +409,7 @@ No mismatches found.
 Tab 5 Report
 
 
-CLK*:
+CLK*:10000
 
 【No Match List】
 CLK_100M_APU_JMB_DN,-

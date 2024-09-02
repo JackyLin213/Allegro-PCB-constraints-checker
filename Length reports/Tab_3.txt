@@ -1,7 +1,7 @@
 Tab 3 Report
 
 
-*MDI*:
+*MDI*:10000
 
 【No Match List】
 LAN_MDI_0_DN,-
@@ -29,7 +29,7 @@ MDI_AQC2_C_P,-
 MDI_AQC2_D_N,-
 MDI_AQC2_D_P,-
 
-*KR*_*X*:
+*KR*_*X*:10000
 
 【No Match List】
 No mismatches found.

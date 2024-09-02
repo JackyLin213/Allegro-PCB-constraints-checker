@@ -1,7 +1,7 @@
 Tab 1 Report
 
 
-*PCIE*_*X*:
+*PCIE*_*X*:10000
 
 【No Match List】
 PCIE2_PCH_LAN_RX0_C_DN,-
@@ -137,13 +137,13 @@ PCIE4_PCH_M2_SLOT2_TX2_DP,-
 PCIE4_PCH_M2_SLOT2_TX3_DN,-
 PCIE4_PCH_M2_SLOT2_TX3_DP,-
 
-*PE*_*X*:
+*PE*_*X*:10000
 
 【No Match List】
 No mismatches found.
 
 
-*SFP*_*X*:
+*SFP*_*X*:10000
 
 【No Match List】
 No mismatches found.

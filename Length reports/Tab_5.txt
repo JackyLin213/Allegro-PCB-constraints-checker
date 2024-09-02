@@ -1,7 +1,7 @@
 Tab 5 Report
 
 
-CLK*:
+CLK*:10000
 
 【No Match List】
 CLK_100M_APU_JMB_DN,-
