@@ -28,7 +28,9 @@ def convert_rpt_to_txt(input_file_path, output_file_path):
         print(f"Error processing file: {e}")
 
 def extract_values(line):
+    line = re.sub(r'\*\*', '', line)  # Remove "**" from the line
     parts = re.split(r'\s+', line.strip())  # 將file內的data依","方式做split
+    print(parts)
     if len(parts) >= 8:  # 假如split後有8個parts
         return [parts[0], parts[2], parts[7]]  # 則return指定位置part[]
     return None

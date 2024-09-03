@@ -4,14 +4,8 @@ Tab 4 Report
 *SATA*_*X*:6000
 
 【No Match List】
-SATA_JMB_MUX_RX0_DN,**
-SATA_JMB_MUX_RX0_DP,**
-SATA_JMB_MUX_RX1_DN,**
-SATA_JMB_MUX_RX1_DP,**
-SATA_JMB_MUX_TX0_DN,**
-SATA_JMB_MUX_TX0_DP,**
-SATA_JMB_MUX_TX1_DN,**
-SATA_JMB_MUX_TX1_DP,**
+No mismatches found.
+
 
 :
 
