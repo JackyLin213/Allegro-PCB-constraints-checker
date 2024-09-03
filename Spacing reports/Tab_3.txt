@@ -107,7 +107,7 @@ MDI_AQC2_C_P,5.000
 MDI_AQC2_D_N,5.000
 MDI_AQC2_D_P,5.000
 
-*KR*_*X*:
+:
 
 【Line_to_Line】
 

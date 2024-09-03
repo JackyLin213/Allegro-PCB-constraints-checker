@@ -157,7 +157,7 @@ USB3_TX2_R_P,5.000
 USB3_TX3_R_N,5.000
 USB3_TX3_R_P,5.000
 
-*USB4*_*X*:
+:
 
 【Line_to_Line】
 

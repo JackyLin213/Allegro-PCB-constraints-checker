@@ -1,13 +1,13 @@
 Tab 6 Report
 
 
-*I2C*_*SDA*:
+:
 
 【No Match List】
 No mismatches found.
 
 
-*I2C*_*SCL*:
+:
 
 【No Match List】
 No mismatches found.

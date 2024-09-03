@@ -1,7 +1,7 @@
 Tab 7 Report
 
 
-*SMB*_*SDA*:
+:
 
 【Line_to_Line】
 
@@ -11,7 +11,7 @@ Tab 7 Report
 
 【Via_to_Via】
 
-*SMB*_*SCL*:
+:
 
 【Line_to_Line】
 

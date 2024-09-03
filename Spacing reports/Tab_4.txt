@@ -555,7 +555,7 @@ SATA_TX8_R_DP,5.000
 SATA_TX9_R_DN,5.000
 SATA_TX9_R_DP,5.000
 
-*SAS*:
+:
 
 【Line_to_Line】
 

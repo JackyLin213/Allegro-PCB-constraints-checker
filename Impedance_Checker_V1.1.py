@@ -30,14 +30,14 @@ class GUIApplication(tk.Tk):
 
         predefined_net_names1 = [
             "*PCIE*_*X*", "*USB2*_D*", "*MDI*",
-            "*SATA*_*X*", "CLK*", "*I2C*_*SDA*", "*SMB*_*SDA*", ""
+            "*SATA*_*X*", "CLK*", "", "", ""
         ]
         predefined_net_names2 = [
-            "*PE*_*X*", "*USB3*_*X*", "*KR*_*X*",
-            "*SAS*", "", "*I2C*_*SCL*", "*SMB*_*SCL*", ""
+            "", "*USB3*_*X*", "",
+            "", "", "", "", ""
         ]
         predefined_net_names3 = [
-            "*SFP*_*X*", "*USB4*_*X*", "", "",
+            "", "", "", "",
             "", "", "", ""
         ]
         predefined_net_names4 = [
