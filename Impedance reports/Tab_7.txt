@@ -1,13 +1,15 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 7 Report
 
 
-*SMB*_*SDA*:
+:
 
 【No Match List】
 No mismatches found.
 
 
-*SMB*_*SCL*:
+:
 
 【No Match List】
 No mismatches found.

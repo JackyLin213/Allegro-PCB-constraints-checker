@@ -77,21 +77,21 @@ class GUIApplication(tk.Tk):
             return
         
         try:
-            self.convert_rpt_to_txt(input_file_path, output_file_path)
+            brd_name = self.convert_rpt_to_txt(input_file_path, output_file_path)  # 提取 brd_name
 
         except Exception as e:
             messagebox.showerror("Error", f"Error converting file: {e}")
             return
         
         for i, tab_content in enumerate(self.tab_contents):
-            tab_content.process_tab(output_file_path, self.tab_names[i])
+            tab_content.process_tab(output_file_path, self.tab_names[i], brd_name)  # 將 brd_name 傳給 process_tab
         
         self.combine_reports()  # 在處理完所有 tab 後自動整合報告
 
     @staticmethod
     def combine_reports():
         save_directory = os.path.join(os.getcwd(), "Length reports")
-        combined_report_path = os.path.join(save_directory, "combined_length__report.txt")
+        combined_report_path = os.path.join(save_directory, "length_constraint_report.txt")
 
         try:
             with open(combined_report_path, "w", encoding="utf-8") as combined_file:
@@ -109,12 +109,18 @@ class GUIApplication(tk.Tk):
 
     def convert_rpt_to_txt(self, input_file_path, output_file_path):
         data = []
-        
+        brd_name = None
         with open(input_file_path, "r", encoding="utf-8") as file:
             is_data_section = False
             
             for line in file:  # 逐行讀取 .rpt 檔案
                 line = line.strip()  # 去除每行前後的空白字符
+
+                if "Design:" in line:
+                    parts = re.split(r'\s+', line.strip())
+                    if len(parts) >= 2:
+                        brd_name = parts[1]
+
                 if line.startswith("Type"):
                     is_data_section = True
                     next(file)
@@ -126,10 +132,14 @@ class GUIApplication(tk.Tk):
                         self.add_unique(data, values)  # 調用 add_unique 函數將values添加到 data 列表中，確保不重複添加
         
         with open(output_file_path, "w", encoding="utf-8") as file:
+            if brd_name:  # 如果成功提取到brd_name，則先寫入
+                file.write(brd_name + "\n")
             for values in data:
                 file.write(",".join(values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
             # print("Data extracted and written to text file successfully.")
-
+        
+        return brd_name  # 返回 brd_name
+    
     @staticmethod
     def extract_values(line):
         line = re.sub(r'\*\*', '', line)  # Remove "**" from the line
@@ -208,7 +218,7 @@ class TabContent(Frame):
             no_match_area.grid(row=5, column=i*2, columnspan=2, padx=5, pady=5)
             self.no_match_areas.append(no_match_area)
 
-    def process_tab(self, file_path, tab_name):
+    def process_tab(self, file_path, tab_name, brd_name):
         all_match_lists = []
         all_no_match_lists = []
 
@@ -228,10 +238,11 @@ class TabContent(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
 
-        self.output_report(all_no_match_lists, tab_name)
+        self.output_report(all_no_match_lists, tab_name, brd_name)
     
-    def output_report(self, all_no_match_lists, tab_name):
-        report_content = f"{tab_name} Report\n\n"
+    def output_report(self, all_no_match_lists, tab_name, brd_name):
+        report_content = f"Board File : {brd_name}\n\n"
+        report_content += f"{tab_name} Report\n\n"
 
         for i in range(4):
             report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"

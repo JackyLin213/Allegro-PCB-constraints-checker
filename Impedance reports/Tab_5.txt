@@ -1,13 +1,13 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 5 Report
 
 
 CLK*:85
 
 【No Match List】
-CLK_25M_HSIO_DN,DEFAULT
-CLK_25M_HSIO_DP,DEFAULT
-CLK_25M_HSIO_R1_DN,DEFAULT
-CLK_25M_HSIO_R1_DP,DEFAULT
+No mismatches found.
+
 
 :
 

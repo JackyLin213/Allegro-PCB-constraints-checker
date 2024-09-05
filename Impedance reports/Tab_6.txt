@@ -1,13 +1,15 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 6 Report
 
 
-*I2C*_*SDA*:
+:
 
 【No Match List】
 No mismatches found.
 
 
-*I2C*_*SCL*:
+:
 
 【No Match List】
 No mismatches found.

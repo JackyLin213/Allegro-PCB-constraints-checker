@@ -1,7 +1,9 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 3 Report
 
 
-*MDI*:4724
+*MDI*:4700
 
 【No Match List】
 No mismatches found.

@@ -1,3 +1,5 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 1 Report
 
 
@@ -7,13 +9,13 @@ Tab 1 Report
 No mismatches found.
 
 
-*PE*_*X*:85
+:
 
 【No Match List】
 No mismatches found.
 
 
-*SFP*_*X*:85
+:
 
 【No Match List】
 No mismatches found.

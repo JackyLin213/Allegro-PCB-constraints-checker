@@ -2,37 +2,47 @@ import re
 
 def convert_rpt_to_txt(input_file_path, output_file_path):
     data = []
-    
+    brd_name = None
+
     try:
         with open(input_file_path, "r", encoding="utf-8") as file:
             is_data_section = False
-            
-            for line in file:  # 逐行讀取 .rpt 檔案
-                line = line.strip()  # 去除每行前後的空白字符
+
+            for line in file: 
+                line = line.strip() 
+                
+                if "Design:" in line:
+                    parts = re.split(r'\s+', line.strip())
+                    if len(parts) >= 2:
+                        brd_name = parts[1]
+                        # print(brd_name)
+
                 if line.startswith("Type"):
                     is_data_section = True
-                    next(file)  # Skip the header line
+                    next(file) 
                     continue
-                
+
                 if is_data_section and line.startswith("Net"):
-                    values = extract_values(line)  # 調用 extract_values 函數從該行提取values
-                    if values:  # 如果提取到values
-                        add_unique(data, values)  # 調用 add_unique 函數將values添加到 data 列表中，確保不重複添加
-        
+                    values = extract_values(line) 
+                    if values:
+                        add_unique(data, values) 
+
         with open(output_file_path, "w", encoding="utf-8") as file:
+            if brd_name:  # 如果成功提取到brd_name，则先写入
+                file.write(brd_name + "\n")
             for values in data:
-                file.write(",".join(values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
+                file.write(",".join(values) + "\n") 
             print("Data extracted and written to text file successfully.")
-    
+
     except Exception as e:
         print(f"Error processing file: {e}")
 
 def extract_values(line):
     line = re.sub(r'\*\*', '', line)  # Remove "**" from the line
     parts = re.split(r'\s+', line.strip())  # 將file內的data依","方式做split
-    print(parts)
-    if len(parts) >= 8:  # 假如split後有8個parts
-        return [parts[0], parts[2], parts[7]]  # 則return指定位置part[]
+    # print(parts)
+    if len(parts) >= 4:  # 假如split後有8個parts
+        return [parts[0], parts[2], parts[3]]  # 則return指定位置part[]
     return None
 
 def add_unique(data_list, new_item):

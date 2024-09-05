@@ -1,19 +1,9 @@
+Board File : RS1625XS+_V10_BRD_0904
+
 Tab 1 Report
 
 
 *PCIE*_*X*:85
-
-【No Match List】
-No mismatches found.
-
-
-*PE*_*X*:85
-
-【No Match List】
-No mismatches found.
-
-
-*SFP*_*X*:85
 
 【No Match List】
 No mismatches found.
@@ -25,6 +15,20 @@ No mismatches found.
 No mismatches found.
 
 
+:
+
+【No Match List】
+No mismatches found.
+
+
+:
+
+【No Match List】
+No mismatches found.
+
+
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 2 Report
 
@@ -41,7 +45,7 @@ No mismatches found.
 No mismatches found.
 
 
-*USB4*_*X*:85
+:
 
 【No Match List】
 No mismatches found.
@@ -53,6 +57,8 @@ No mismatches found.
 No mismatches found.
 
 
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 3 Report
 
@@ -63,12 +69,6 @@ Tab 3 Report
 No mismatches found.
 
 
-*KR*_*X*:85
-
-【No Match List】
-No mismatches found.
-
-
 :
 
 【No Match List】
@@ -81,6 +81,14 @@ No mismatches found.
 No mismatches found.
 
 
+:
+
+【No Match List】
+No mismatches found.
+
+
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 4 Report
 
@@ -91,12 +99,6 @@ Tab 4 Report
 No mismatches found.
 
 
-*SAS*:85
-
-【No Match List】
-No mismatches found.
-
-
 :
 
 【No Match List】
@@ -109,6 +111,14 @@ No mismatches found.
 No mismatches found.
 
 
+:
+
+【No Match List】
+No mismatches found.
+
+
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 5 Report
 
@@ -116,14 +126,6 @@ Tab 5 Report
 CLK*:85
 
 【No Match List】
-CLK_25M_HSIO_DN,DEFAULT
-CLK_25M_HSIO_DP,DEFAULT
-CLK_25M_HSIO_R1_DN,DEFAULT
-CLK_25M_HSIO_R1_DP,DEFAULT
-
-:
-
-【No Match List】
 No mismatches found.
 
 
@@ -139,17 +141,25 @@ No mismatches found.
 No mismatches found.
 
 
+:
+
+【No Match List】
+No mismatches found.
+
+
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 6 Report
 
 
-*I2C*_*SDA*:
+:
 
 【No Match List】
 No mismatches found.
 
 
-*I2C*_*SCL*:
+:
 
 【No Match List】
 No mismatches found.
@@ -167,17 +177,19 @@ No mismatches found.
 No mismatches found.
 
 
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 7 Report
 
 
-*SMB*_*SDA*:
+:
 
 【No Match List】
 No mismatches found.
 
 
-*SMB*_*SCL*:
+:
 
 【No Match List】
 No mismatches found.
@@ -195,6 +207,8 @@ No mismatches found.
 No mismatches found.
 
 
+
+Board File : RS1625XS+_V10_BRD_0904
 
 Tab 8 Report
 
