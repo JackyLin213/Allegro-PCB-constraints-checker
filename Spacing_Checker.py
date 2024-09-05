@@ -27,7 +27,7 @@ class Utils:
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Spacing Checker V1.1")
+        self.title("Spacing Checker V1.2")
         self.geometry("1280x850")
         # self.resizable(False, False)
         self.tab_contents = []

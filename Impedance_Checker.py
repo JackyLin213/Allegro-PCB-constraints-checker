@@ -8,7 +8,7 @@ import re  # import regex expression
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Impedance Checker V1.1")
+        self.title("Impedance Checker V1.2")
         self.geometry("1250x680")
         self.resizable(False, False)
         self.tab_contents = []

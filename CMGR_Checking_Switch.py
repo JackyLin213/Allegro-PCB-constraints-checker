@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 
-from Impedance_Checker_V12 import Impedance_Checker
-from Length_Checker_V12 import Length_Checker
-from Spacing_Checker_V12 import Spacing_Checker
+from Impedance_Checker import Impedance_Checker
+from Length_Checker import Length_Checker
+from Spacing_Checker import Spacing_Checker
 
 
 def run_script(script_name):
