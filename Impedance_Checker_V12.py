@@ -302,6 +302,7 @@ class TabContent(Frame):
             no_match_area.insert(tk.END, ",".join(item) + "\n")
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+def Impedance_Checker():
     app = GUIApplication()
     app.mainloop()
