@@ -9,7 +9,7 @@ from Spacing_Checker import spacing_checker
 
 def run_script(script_name):
     try:
-        if script_name == "impedance_Checker":
+        if script_name == "Impedance_Checker":
             impedance_checker()
         elif script_name == "Length_Checker":
             length_checker()

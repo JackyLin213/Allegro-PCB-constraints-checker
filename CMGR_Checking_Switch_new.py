@@ -6,13 +6,13 @@ def run_script(script_name):
     try:
         if script_name == "Impedance_Checker":
             from Impedance_Checker_new import impedance_checker  # 延遲導入
-            Impedance_Checker()
+            impedance_checker()
         elif script_name == "Length_Checker":
             from Length_Checker_new import length_checker  # 延遲導入
-            Length_Checker()
+            length_checker()
         elif script_name == "Spacing_Checker":
             from Spacing_Checker_new import spacing_checker  # 延遲導入
-            Spacing_Checker()
+            spacing_checker()
 
     except Exception as e:
         tk.messagebox.showerror("Error", f"Failed to run script: {e}")
