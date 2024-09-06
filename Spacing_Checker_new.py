@@ -333,9 +333,9 @@ for i in range(8):
 process_button = Button(window, text="Process", command=process_data)
 process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
 
-def Spacing_Checker():
+def spacing_checker():
     window.mainloop()
 
 if __name__ == "__main__":
-    Spacing_Checker()
+    spacing_checker()
     

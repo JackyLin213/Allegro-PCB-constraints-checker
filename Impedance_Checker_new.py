@@ -288,9 +288,9 @@ for i in range(8):
 process_button = Button(window, text="Process", command=process_data)
 process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
 
-def Impedance_Checker():
+def impedance_checker():
     window.mainloop()
 
 if __name__ == "__main__":
-    Impedance_Checker()
+    impedance_checker()
     

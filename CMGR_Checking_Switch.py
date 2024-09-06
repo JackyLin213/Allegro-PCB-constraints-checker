@@ -2,19 +2,19 @@ import tkinter as tk
 from tkinter import ttk
 
 
-from Impedance_Checker import Impedance_Checker
-from Length_Checker import Length_Checker
-from Spacing_Checker import Spacing_Checker
+from Impedance_Checker import impedance_checker
+from Length_Checker import length_checker
+from Spacing_Checker import spacing_checker
 
 
 def run_script(script_name):
     try:
-        if script_name == "Impedance_Checker":
-            Impedance_Checker()
+        if script_name == "impedance_Checker":
+            impedance_checker()
         elif script_name == "Length_Checker":
-            Length_Checker()
+            length_checker()
         elif script_name == "Spacing_Checker":
-            Spacing_Checker()
+            spacing_checker()
 
     except Exception as e:
         tk.messagebox.showerror("Error", f"Failed to run script: {e}")

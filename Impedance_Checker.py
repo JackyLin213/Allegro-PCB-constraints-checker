@@ -153,8 +153,8 @@ class GUIApplication(tk.Tk):
         if values not in data:  # 假如values不在data list內
             data.append(values)  # 則將values添加到data list尾中
 
-
-    def wildcard_to_regex(self, wildcard):
+    @staticmethod
+    def wildcard_to_regex(wildcard):
         regex = "^"
         for char in wildcard:
             if char == "*":
@@ -301,7 +301,7 @@ class TabContent(Frame):
         for item in no_match_list:
             no_match_area.insert(tk.END, ",".join(item) + "\n")
 
-def Impedance_Checker():
+def impedance_checker():
     app = GUIApplication()
     app.mainloop()
 

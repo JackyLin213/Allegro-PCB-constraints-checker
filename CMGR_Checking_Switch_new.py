@@ -5,13 +5,13 @@ from tkinter import ttk
 def run_script(script_name):
     try:
         if script_name == "Impedance_Checker":
-            from Impedance_Checker_new import Impedance_Checker  # 延遲導入
+            from Impedance_Checker_new import impedance_checker  # 延遲導入
             Impedance_Checker()
         elif script_name == "Length_Checker":
-            from Length_Checker_new import Length_Checker  # 延遲導入
+            from Length_Checker_new import length_checker  # 延遲導入
             Length_Checker()
         elif script_name == "Spacing_Checker":
-            from Spacing_Checker_new import Spacing_Checker  # 延遲導入
+            from Spacing_Checker_new import spacing_checker  # 延遲導入
             Spacing_Checker()
 
     except Exception as e:

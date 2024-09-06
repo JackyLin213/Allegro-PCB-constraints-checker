@@ -347,7 +347,7 @@ class TabContent(Frame):
         for item in result_list:
             text_area.insert(tk.END, item + "\n")
 
-def Spacing_Checker():
+def spacing_checker():
     app = GUIApplication()
     app.mainloop()
 
