@@ -144,7 +144,7 @@ class GUIApplication(tk.Tk):
     def extract_values(line):
         line = re.sub(r'\*\*', '', line)  # Remove "**" from the line
         parts = re.split(r'\s+', line.strip())  # 將file內的data依","方式做split
-        if len(parts) >= 4:   # 假如split後有4個parts
+        if len(parts) >= 8:   # 假如split後有8個parts
             return [parts[0], parts[2], parts[7]]  # 則return指定位置part[]
         return None
 
@@ -175,7 +175,7 @@ class TabContent(Frame):
         super().__init__(parent)
         
         self.net_name_fields = []
-        self.impedance_fields = []
+        self.length_fields = []
         self.match_areas = []
         self.no_match_areas = []
 
@@ -195,12 +195,12 @@ class TabContent(Frame):
                 net_name_field.insert(0, default_net_name4)
             self.net_name_fields.append(net_name_field)
             
-            impedance_label = Label(self, text="設定線長")
-            impedance_label.grid(row=1, column=i*2, padx=5, pady=5, sticky='w')
+            length_label = Label(self, text="設定線長")
+            length_label.grid(row=1, column=i*2, padx=5, pady=5, sticky='w')
             
-            impedance_field = Entry(self)
-            impedance_field.grid(row=1, column=i*2+1, padx=5, pady=5)
-            self.impedance_fields.append(impedance_field)
+            length_field = Entry(self)
+            length_field.grid(row=1, column=i*2+1, padx=5, pady=5)
+            self.length_fields.append(length_field)
             
             # PASS Label above match_area
             pass_label = Label(self, text="PASS")
@@ -224,7 +224,7 @@ class TabContent(Frame):
 
         for i in range(4):
             target_second_line = self.net_name_fields[i].get()
-            target_third_line = self.impedance_fields[i].get()
+            target_third_line = self.length_fields[i].get()
             match_list = []
             no_match_list = []
 
@@ -238,14 +238,14 @@ class TabContent(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
 
-        self.output_report(all_no_match_lists, tab_name, brd_name)
+        self.output_report(all_no_match_lists, all_match_lists, tab_name, brd_name)
     
-    def output_report(self, all_no_match_lists, tab_name, brd_name):
+    def output_report(self, all_no_match_lists, all_match_lists, tab_name, brd_name):
         report_content = f"Board File : {brd_name}\n\n"
         report_content += f"{tab_name} Report\n\n"
 
         for i in range(4):
-            report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"
+            report_content += f"\n{self.net_name_fields[i].get()}:{self.length_fields[i].get()}\n\n"
             # report_content += "Match List:\n"
             # if all_match_lists[i]:
             #     report_content += "\n".join(all_match_lists[i]) + "\n\n"
@@ -300,8 +300,10 @@ class TabContent(Frame):
         for item in no_match_list:
             no_match_area.insert(tk.END, ",".join(item) + "\n")
 
-
-# if __name__ == "__main__":
 def Length_Checker():
+    app = GUIApplication()
+    app.mainloop()
+
+if __name__ == "__main__":
     app = GUIApplication()
     app.mainloop()

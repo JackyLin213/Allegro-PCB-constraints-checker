@@ -239,20 +239,20 @@ class TabContent(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
 
-        self.output_report(all_no_match_lists, tab_name, brd_name)
+        self.output_report(all_no_match_lists, all_match_lists, tab_name, brd_name)
 
-    def output_report(self, all_no_match_lists, tab_name, brd_name):
+    def output_report(self, all_no_match_lists, all_match_lists, tab_name, brd_name):
         report_content = f"Board File : {brd_name}\n\n"
         report_content += f"{tab_name} Report\n\n"
 
         for i in range(4):
             report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"
-            # report_content += "Match List:\n"
+            # report_content += "【Match List】:\n"
             # if all_match_lists[i]:
             #     report_content += "\n".join(all_match_lists[i]) + "\n\n"
             # else:
             #     report_content += "No matches found.\n\n"
-            report_content += "【No Match List】\n"
+            report_content += "【No Match List】:\n"
             if all_no_match_lists[i]:
                 for item in all_no_match_lists[i]:
                     report_content += ",".join(item) + "\n"
@@ -301,8 +301,10 @@ class TabContent(Frame):
         for item in no_match_list:
             no_match_area.insert(tk.END, ",".join(item) + "\n")
 
-
-# if __name__ == "__main__":
 def Impedance_Checker():
+    app = GUIApplication()
+    app.mainloop()
+
+if __name__ == "__main__":
     app = GUIApplication()
     app.mainloop()
