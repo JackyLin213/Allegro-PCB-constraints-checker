@@ -4,152 +4,55 @@ from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
 import re
 
-class ImpedanceCheckerGUI:
-    def __init__(self, window):
-        self.window = window
-        self.window.title("Impedance Checker V1.2")
-        self.window.geometry("1250x680")
-        self.window.resizable(False, False)
 
-        self.tab_contents = []
-        self.tab_names = []
+# Create the main GUI window
+window = tk.Tk()
+window.title("Impedance Checker V1.2")
+window.geometry("1250x680")
+window.resizable(False, False)
 
-        self.create_import_panel()
-        self.create_tabbed_pane()
-        self.create_process_button()
+# File import panel
+import_panel = Frame(window)
+import_panel.pack(side=tk.TOP, padx=0, pady=10, anchor="nw")
 
-    def create_import_panel(self):
-        import_panel = Frame(self.window)
-        import_panel.pack(side=tk.TOP, padx=0, pady=10, anchor="nw")
+def import_file():
+    file_path = filedialog.askopenfilename(filetypes=[("RPT Files", "*.rpt")])
+    if file_path:
+        input_file_path_field.delete(0, tk.END)
+        input_file_path_field.insert(0, file_path)
+        
+# Import button & path field
+import_button = Button(import_panel, text="Import .rpt file", command=import_file)
+import_button.pack(side=tk.LEFT, padx=5)
+input_file_path_field = Entry(import_panel, width=50)
+input_file_path_field.pack(side=tk.LEFT, padx=5)
 
-        import_button = Button(import_panel, text="Import .rpt file", command=self.import_file)
-        import_button.pack(side=tk.LEFT, padx=5)
+# Tabbed pane
+tab_control = Notebook(window)
+tab_control.pack(expand=1, fill="both")
 
-        self.input_file_path_field = Entry(import_panel, width=50)
-        self.input_file_path_field.pack(side=tk.LEFT, padx=5)
+# Function to create a tab's content
+def create_tab_content(default_net_names):
+    frame = Frame(window)
 
-    def create_tabbed_pane(self):
-        self.tab_control = Notebook(self.window)
-        self.tab_control.pack(expand=1, fill="both")
+    net_name_fields = []
+    impedance_fields = []
+    match_areas = []
+    no_match_areas = []
 
-        predefined_net_names = [
-            ["*PCIE*_*X*", "*USB2*_D*", "*MDI*", "*SATA*_*X*", "CLK*", "", "", ""],
-            ["", "*USB3*_*X*", "", "", "", "", "", ""],
-            ["", "", "", "", "", "", "", ""],
-            ["", "", "", "", "", "", "", ""]
-        ]
-
-        for i in range(8):
-            tab_content = ImpedanceCheckerTab(self.window, predefined_net_names[:, i]) 
-            tab_name = f"Tab {i + 1}"
-            self.tab_control.add(tab_content, text=tab_name)
-            self.tab_contents.append(tab_content)
-            self.tab_names.append(tab_name)
-
-    def create_process_button(self):
-        process_button = Button(self.window, text="Process", command=self.process_data)
-        process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
-
-    def import_file(self):
-        file_path = filedialog.askopenfilename(filetypes=[("RPT Files", "*.rpt")])
-        if file_path:
-            self.input_file_path_field.delete(0, tk.END)
-            self.input_file_path_field.insert(0, file_path)
-
-    def process_data(self):
-        input_file_path = self.input_file_path_field.get()
-        output_file_path = os.path.join(os.getcwd(), "rpt.txt")
-
-        if not input_file_path:
-            messagebox.showwarning("Warning", "Please select a file.")
-            return
-
-        try:
-            brd_name = convert_rpt_to_txt(input_file_path, output_file_path) 
-
-        except Exception as e:
-            messagebox.showerror("Error", f"Error converting file: {e}")
-            return
-
-        for i, tab_content in enumerate(self.tab_contents):
-            tab_content.process_tab(output_file_path, self.tab_names[i], brd_name)
-
-        self.combine_reports()
-
-    def combine_reports(self):
-        save_directory = os.path.join(os.getcwd(), "Impedance reports")
-        combined_report_path = os.path.join(save_directory, "impedance_constraint_report.txt")
-
-        try:
-            with open(combined_report_path, "w", encoding="utf-8") as combined_file:
-                for i in range(8):
-                    tab_filename = f"Tab_{i + 1}.txt"
-                    tab_filepath = os.path.join(save_directory, tab_filename)
-
-                    if os.path.exists(tab_filepath):
-                        with open(tab_filepath, "r", encoding="utf-8") as tab_file:
-                            combined_file.write(tab_file.read())
-                            combined_file.write("\n\n") 
-
-        except Exception as e:
-            messagebox.showerror("Error", f"Error combining reports: {e}")
-
-
-class ImpedanceCheckerTab(Frame):
-    def __init__(self, window, default_net_names): 
-        super().__init__(window)
-
-        self.net_name_fields = []
-        self.impedance_fields = []
-        self.match_areas = []
-        self.no_match_areas = []
-
-        self.create_tab_content(default_net_names)
-
-    def create_tab_content(self, default_net_names):
-        for i in range(4):
-            net_name_label = Label(self, text="輸入 net name")
-            net_name_label.grid(row=0, column=i * 2, padx=5, pady=5, sticky='w')
-
-            net_name_field = Entry(self)
-            net_name_field.grid(row=0, column=i * 2 + 1, padx=5, pady=5)
-            net_name_field.insert(0, default_net_names[i]) 
-            self.net_name_fields.append(net_name_field)
-
-            impedance_label = Label(self, text="設定阻抗")
-            impedance_label.grid(row=1, column=i * 2, padx=5, pady=5, sticky='w')
-
-            impedance_field = Entry(self)
-            impedance_field.grid(row=1, column=i * 2 + 1, padx=5, pady=5)
-            self.impedance_fields.append(impedance_field)
-
-            pass_label = Label(self, text="PASS")
-            pass_label.grid(row=2, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
-
-            match_area = scrolledtext.ScrolledText(self, height=15, width=40)
-            match_area.grid(row=3, column=i * 2, columnspan=2, padx=5, pady=5)
-            self.match_areas.append(match_area)
-
-            fail_label = Label(self, text="FAIL")
-            fail_label.grid(row=4, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
-
-            no_match_area = scrolledtext.ScrolledText(self, height=15, width=40)
-            no_match_area.grid(row=5, column=i * 2, columnspan=2, padx=5, pady=5)
-            self.no_match_areas.append(no_match_area)
-
-    def process_tab(self, file_path, tab_name, brd_name):
+    def process_tab(file_path, tab_name, brd_name):
         all_match_lists = []
         all_no_match_lists = []
 
         for i in range(4):
-            target_second_line = self.net_name_fields[i].get()
-            target_third_line = self.impedance_fields[i].get()
+            target_second_line = net_name_fields[i].get()
+            target_third_line = impedance_fields[i].get()
             match_list = []
             no_match_list = []
 
             try:
                 process_file(file_path, target_second_line, target_third_line, match_list, no_match_list)
-                self.display_results(match_list, self.match_areas[i], no_match_list, self.no_match_areas[i])
+                display_results(match_list, match_areas[i], no_match_list, no_match_areas[i])
 
                 all_match_lists.append(match_list)
                 all_no_match_lists.append(no_match_list)
@@ -157,14 +60,16 @@ class ImpedanceCheckerTab(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
 
-        self.output_report(all_no_match_lists, tab_name, brd_name)
-
-    def output_report(self, all_no_match_lists, tab_name, brd_name):
+        # Define reports format 
         report_content = f"Board File : {brd_name}\n\n"
         report_content += f"{tab_name} Report\n\n"
-
         for i in range(4):
-            report_content += f"\n{self.net_name_fields[i].get()}:{self.impedance_fields[i].get()}\n\n"
+            report_content += f"\n{net_name_fields[i].get()}:{impedance_fields[i].get()}\n\n"
+            # report_content += "Match List:\n"
+            # if all_match_lists[i]:
+            #     report_content += "\n".join(all_match_lists[i]) + "\n\n"
+            # else:
+            #     report_content += "No matches found.\n\n"
             report_content += "【No Match List】\n"
             if all_no_match_lists[i]:
                 for item in all_no_match_lists[i]:
@@ -184,33 +89,109 @@ class ImpedanceCheckerTab(Frame):
             except Exception as e:
                 messagebox.showerror("Error", f"Error saving report: {e}")
     
-    def process_file(file_path, target_second_line, target_third_line, match_list, no_match_list):
-        regex_second_line = wildcard_to_regex(target_second_line)
+    # Define label & field size
+    for i in range(4):
+        net_name_label = Label(frame, text="輸入 net name")
+        net_name_label.grid(row=0, column=i * 2, padx=5, pady=5, sticky='w')
 
-        with open(file_path, "r", encoding="utf-8") as file:
-            for line in file:
-                parts = line.strip().split(",")
-                if len(parts) == 3 and parts[0] == "Net":
-                    if re.match(regex_second_line, parts[1]):
-                        if target_third_line and target_third_line in parts[2]:
-                            match_list.append(parts[1])
-                        else:
-                            no_match_list.append([parts[1], parts[2]])
+        net_name_field = Entry(frame)
+        net_name_field.grid(row=0, column=i * 2 + 1, padx=5, pady=5)
+        net_name_field.insert(0, default_net_names[i])
+        net_name_fields.append(net_name_field)
 
-        match_list.sort()
-        no_match_list.sort()
+        impedance_label = Label(frame, text="設定阻抗")
+        impedance_label.grid(row=1, column=i * 2, padx=5, pady=5, sticky='w')
 
-    def display_results(self, match_list, match_area, no_match_list, no_match_area):
-        match_area.delete(1.0, tk.END)
-        no_match_area.delete(1.0, tk.END)
+        impedance_field = Entry(frame)
+        impedance_field.grid(row=1, column=i * 2 + 1, padx=5, pady=5)
+        impedance_fields.append(impedance_field)
 
-        for item in match_list:
-            match_area.insert(tk.END, item + "\n")
+        pass_label = Label(frame, text="PASS")
+        pass_label.grid(row=2, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
 
-        for item in no_match_list:
-            no_match_area.insert(tk.END, ",".join(item) + "\n")
+        match_area = scrolledtext.ScrolledText(frame, height=15, width=40)
+        match_area.grid(row=3, column=i * 2, columnspan=2, padx=5, pady=5)
+        match_areas.append(match_area)
 
-# Helper functions 
+        fail_label = Label(frame, text="FAIL")
+        fail_label.grid(row=4, column=i * 2, columnspan=2, padx=5, pady=5, sticky='w')
+
+        no_match_area = scrolledtext.ScrolledText(frame, height=15, width=40)
+        no_match_area.grid(row=5, column=i * 2, columnspan=2, padx=5, pady=5)
+        no_match_areas.append(no_match_area)
+
+    # Attach the process_tab function to the frame
+    frame.process_tab = process_tab
+    return frame
+
+# Create 8 tabs and add them to the tab control
+tab_contents = []
+tab_names = []
+# Create predefined net name
+predefined_net_names1 = [
+    "*PCIE*_*X*", "*USB2*_D*", "*MDI*",
+    "*SATA*_*X*", "CLK*", "", "", ""
+]
+predefined_net_names2 = [
+    "", "*USB3*_*X*", "",
+    "", "", "", "", ""
+]
+predefined_net_names3 = [
+    "", "", "", "",
+    "", "", "", ""
+]
+predefined_net_names4 = [
+    "", "", "", "",
+    "", "", "", ""
+]
+
+for i in range(8):
+    tab_content = create_tab_content([
+        predefined_net_names1[i],
+        predefined_net_names2[i],
+        predefined_net_names3[i],
+        predefined_net_names4[i]
+    ])
+    tab_name = f"Tab {i + 1}"
+    tab_control.add(tab_content, text=tab_name)
+    tab_contents.append(tab_content)
+    tab_names.append(tab_name)
+
+def process_data():
+    input_file_path = input_file_path_field.get()
+    output_file_path = os.path.join(os.getcwd(), "rpt.txt")
+
+    if not input_file_path:
+        messagebox.showwarning("Warning", "Please select a file.")
+        return
+
+    try:
+        brd_name = convert_rpt_to_txt(input_file_path, output_file_path) 
+
+    except Exception as e:
+        messagebox.showerror("Error", f"Error converting file: {e}")
+        return
+
+    for i, tab_content in enumerate(tab_contents):
+        tab_content.process_tab(output_file_path, tab_names[i], brd_name)
+
+    # combine file
+    save_directory = os.path.join(os.getcwd(), "Impedance reports")
+    combined_report_path = os.path.join(save_directory, "impedance_constraint_report.txt")
+
+    try:
+        with open(combined_report_path, "w", encoding="utf-8") as combined_file:
+            for i in range(8):
+                tab_filename = f"Tab_{i + 1}.txt"
+                tab_filepath = os.path.join(save_directory, tab_filename)
+
+                if os.path.exists(tab_filepath):
+                    with open(tab_filepath, "r", encoding="utf-8") as tab_file:
+                        combined_file.write(tab_file.read())
+                        combined_file.write("\n\n") 
+
+    except Exception as e:
+        messagebox.showerror("Error", f"Error combining reports: {e}")
 
 def convert_rpt_to_txt(input_file_path, output_file_path):
     data = []
@@ -271,10 +252,39 @@ def wildcard_to_regex(wildcard):
     regex += "$"
     return regex
 
-def main():
-    window = tk.Tk()
-    app = ImpedanceCheckerGUI(window)
+def process_file(file_path, target_second_line, target_third_line, match_list, no_match_list):
+        regex_second_line = wildcard_to_regex(target_second_line)
+
+        with open(file_path, "r", encoding="utf-8") as file:
+            for line in file:
+                parts = line.strip().split(",") 
+                if len(parts) == 3 and parts[0] == "Net":
+                    if re.match(regex_second_line, parts[1]):
+                        if target_third_line and target_third_line in parts[2]:
+                            match_list.append(parts[1])
+                        else:
+                            no_match_list.append([parts[1], parts[2]])
+
+        match_list.sort()
+        no_match_list.sort()
+
+def display_results(match_list, match_area, no_match_list, no_match_area):
+        match_area.delete(1.0, tk.END)
+        no_match_area.delete(1.0, tk.END)
+
+        for item in match_list:
+            match_area.insert(tk.END, item + "\n")
+
+        for item in no_match_list:
+            no_match_area.insert(tk.END, ",".join(item) + "\n")    
+
+# Process button
+process_button = Button(window, text="Process", command=process_data)
+process_button.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
+
+def impedance_checker():
     window.mainloop()
 
 if __name__ == "__main__":
-    main()
+    impedance_checker()
+    
