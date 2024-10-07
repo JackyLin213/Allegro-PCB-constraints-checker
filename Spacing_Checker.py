@@ -163,8 +163,8 @@ class GUIApplication(tk.Tk):
     @staticmethod
     def extract_values(line):
         parts = re.split(r'\s+', line.strip())  # 將file內的data依","方式做split
-        if len(parts) >= 52:   # 假如split後有52個parts
-            return [parts[0], parts[2], parts[5], parts[9], parts[12], parts[51]]  # 則return指定位置part[]
+        if len(parts) >= 51:   # 假如split後有51個parts
+            return [parts[0], parts[2], parts[5], parts[9], parts[12],parts[46], parts[50]]  # 則return指定位置part[]
         return None
 
     @staticmethod
@@ -181,6 +181,7 @@ class TabContent(Frame):
         self.line_to_line_areas = []
         self.line_to_via_areas = []
         self.line_to_shape_areas = []
+        self.via_to_line_areas = []
         self.via_to_via_areas = []
 
         for i in range(4):
@@ -202,37 +203,45 @@ class TabContent(Frame):
             # Add titles and ScrolledText widgets
             line_to_line_label = Label(self, text="Line to Line")
             line_to_line_label.grid(row=1, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_line_area = scrolledtext.ScrolledText(self, height=10, width=60)
+            line_to_line_area = scrolledtext.ScrolledText(self, height=5, width=60)
             line_to_line_area.grid(row=2, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_line_areas.append(line_to_line_area)
 
-            line_to_via_label = Label(self, text="Line to VIA")
+            line_to_via_label = Label(self, text="Line to Via")
             line_to_via_label.grid(row=3, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_via_area = scrolledtext.ScrolledText(self, height=10, width=60)
+            line_to_via_area = scrolledtext.ScrolledText(self, height=5, width=60)
             line_to_via_area.grid(row=4, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_via_areas.append(line_to_via_area)
             
             line_to_shape_label = Label(self, text="Line to Shape")
             line_to_shape_label.grid(row=5, column=i*4, padx=5, pady=5, sticky='w')
-            line_to_shape_area = scrolledtext.ScrolledText(self, height=10, width=60)
+            line_to_shape_area = scrolledtext.ScrolledText(self, height=5, width=60)
             line_to_shape_area.grid(row=6, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.line_to_shape_areas.append(line_to_shape_area)
 
-            via_to_via_label = Label(self, text="VIA to VIA")
-            via_to_via_label.grid(row=7, column=i*4, padx=5, pady=5, sticky='w')
-            via_to_via_area = scrolledtext.ScrolledText(self, height=10, width=60)
-            via_to_via_area.grid(row=8, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
+            via_to_line_label = Label(self, text="Via to Line")
+            via_to_line_label.grid(row=7, column=i*4, padx=5, pady=5, sticky='w')
+            via_to_line_area = scrolledtext.ScrolledText(self, height=5, width=60)
+            via_to_line_area.grid(row=8, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
+            self.via_to_line_areas.append(via_to_line_area)
+
+            via_to_via_label = Label(self, text="Via to Via")
+            via_to_via_label.grid(row=9, column=i*4, padx=5, pady=5, sticky='w')
+            via_to_via_area = scrolledtext.ScrolledText(self, height=5, width=60)
+            via_to_via_area.grid(row=10, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.via_to_via_areas.append(via_to_via_area)
             
             self.grid_columnconfigure(i*4, weight=1)
             self.grid_columnconfigure(i*4+1, weight=1)
             self.grid_columnconfigure(i*4+2, weight=1)
             self.grid_columnconfigure(i*4+3, weight=1)
+            self.grid_columnconfigure(i*4+4, weight=1)
 
     def process_tab(self, file_path, tab_name, brd_name):
         all_line_to_line_lists = []
         all_line_to_via_lists = []
         all_line_to_shape_lists = []
+        all_via_to_line_lists = []
         all_via_to_via_lists = []
 
         for i in range(4):
@@ -240,6 +249,7 @@ class TabContent(Frame):
             line_to_line_list = []
             line_to_via_list = []
             line_to_shape_list = []
+            via_to_line_list = []
             via_to_via_list = []
 
             try:
@@ -248,16 +258,19 @@ class TabContent(Frame):
                                   line_to_line_list,
                                   line_to_via_list,
                                   line_to_shape_list,
+                                  via_to_line_list,
                                   via_to_via_list
                                   )
                 self.display_results(line_to_line_list, self.line_to_line_areas[i])
                 self.display_results(line_to_via_list, self.line_to_via_areas[i])
                 self.display_results(line_to_shape_list, self.line_to_shape_areas[i])
+                self.display_results(via_to_line_list, self.via_to_line_areas[i])
                 self.display_results(via_to_via_list, self.via_to_via_areas[i])
 
                 all_line_to_line_lists.append(line_to_line_list)
                 all_line_to_via_lists.append(line_to_via_list)
                 all_line_to_shape_lists.append(line_to_shape_list)
+                all_via_to_line_lists.append(via_to_line_list)
                 all_via_to_via_lists.append(via_to_via_list)
 
             except Exception as e:
@@ -266,6 +279,7 @@ class TabContent(Frame):
         self.output_report(all_line_to_line_lists,
                            all_line_to_via_lists,
                            all_line_to_shape_lists,
+                           all_via_to_line_lists,
                            all_via_to_via_lists,
                            tab_name,
                            brd_name
@@ -275,6 +289,7 @@ class TabContent(Frame):
                       all_line_to_line_lists,
                       all_line_to_via_lists,
                       all_line_to_shape_lists,
+                      all_via_to_line_lists,
                       all_via_to_via_lists,
                       tab_name,
                       brd_name
@@ -295,6 +310,10 @@ class TabContent(Frame):
             report_content += "\n【Line_to_Shape】\n"
             if all_line_to_shape_lists[i]:
                 for item in all_line_to_shape_lists[i]:
+                    report_content += "".join(item) + "\n"
+            report_content += "\n【Via_to_Line】\n"
+            if all_via_to_line_lists[i]:
+                for item in all_via_to_line_lists[i]:
                     report_content += "".join(item) + "\n"
             report_content += "\n【Via_to_Via】\n"
             if all_via_to_via_lists[i]:
@@ -321,6 +340,7 @@ class TabContent(Frame):
                      line_to_line_list,
                      line_to_via_list,
                      line_to_shape_list,
+                     via_to_line_list,
                      via_to_via_list
                      ):
         regex_target_net_name = Utils.wildcard_to_regex(target_net_name)  # 將輸入的net name轉成regex type
@@ -328,17 +348,19 @@ class TabContent(Frame):
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 parts = line.strip().split(",")  # 將file內的data依","方式做split
-                if len(parts) >= 6 and parts[0] == "Net":  # 假如split後有6個part，且part[0] = NET，則繼續
+                if len(parts) >= 7 and parts[0] == "Net":  # 假如split後有6個part，且part[0] = NET，則繼續
                     if re.match(regex_target_net_name, parts[1]):  # 將regex_second_line和parts[1]做match
                         line_to_line_list.append(f"{parts[1]},{parts[2]}")
                         line_to_via_list.append(f"{parts[1]},{parts[3]}")
                         line_to_shape_list.append(f"{parts[1]},{parts[4]}")
-                        via_to_via_list.append(f"{parts[1]},{parts[5]}")
+                        via_to_line_list.append(f"{parts[1]},{parts[5]}")
+                        via_to_via_list.append(f"{parts[1]},{parts[6]}")
 
         # Sort lists in descending order
         line_to_line_list.sort()
         line_to_via_list.sort()
         line_to_shape_list.sort()
+        via_to_line_list.sort()
         via_to_via_list.sort()
 
     @staticmethod

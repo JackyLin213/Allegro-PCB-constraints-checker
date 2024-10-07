@@ -104,8 +104,8 @@ def convert_rpt_to_txt(input_file_path, output_file_path):
 
 def extract_values(line):
     parts = re.split(r'\s+', line.strip())
-    if len(parts) >= 52:
-        return [parts[0], parts[2], parts[5], parts[9], parts[12], parts[51]] 
+    if len(parts) >= 51:
+        return [parts[0], parts[2], parts[5], parts[9], parts[12], parts[50]] 
     return None
 
 def add_unique(data, values):
@@ -288,7 +288,7 @@ def create_tab_content(default_net_names):
         line_to_line_area.grid(row=2, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
         line_to_line_areas.append(line_to_line_area)
 
-        line_to_via_label = Label(frame, text="Line to VIA")
+        line_to_via_label = Label(frame, text="Line to Via")
         line_to_via_label.grid(row=3, column=i*4, padx=5, pady=5, sticky='w')
         line_to_via_area = scrolledtext.ScrolledText(frame, height=10, width=60)
         line_to_via_area.grid(row=4, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
@@ -300,7 +300,7 @@ def create_tab_content(default_net_names):
         line_to_shape_area.grid(row=6, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
         line_to_shape_areas.append(line_to_shape_area)
 
-        via_to_via_label = Label(frame, text="VIA to VIA")
+        via_to_via_label = Label(frame, text="Via to Via")
         via_to_via_label.grid(row=7, column=i*4, padx=5, pady=5, sticky='w')
         via_to_via_area = scrolledtext.ScrolledText(frame, height=10, width=60)
         via_to_via_area.grid(row=8, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
