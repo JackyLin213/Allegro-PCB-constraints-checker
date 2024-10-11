@@ -125,6 +125,7 @@ class GUIApplication(tk.Tk):
                             
         except Exception as e:
             messagebox.showerror("Error", f"Error combining reports: {e}")
+        print("Reports output successfully.")
 
     def convert_rpt_to_txt(self, input_file_path, output_file_path):
         data = []
@@ -156,9 +157,9 @@ class GUIApplication(tk.Tk):
                 file.write(brd_name + "\n")
             for values in data:
                 file.write(",".join(values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
-            # print("Data extracted and written to text file successfully.")
+            print("Convert RPT to TXT successfully.")
 
-            return brd_name  # 返回 brd_name
+        return brd_name  # 返回 brd_name
     
     @staticmethod
     def extract_values(line):
@@ -294,45 +295,46 @@ class TabContent(Frame):
                       tab_name,
                       brd_name
                       ):
-        report_content = f"Board File : {brd_name}\n\n"
-        report_content += f"{tab_name} Report\n\n"
+        if any(all_line_to_line_lists):
+            report_content = f"Board File : {brd_name}\n\n"
+            # report_content += f"{tab_name} Report\n\n"
 
-        for i in range(4):
-            report_content += f"\n{self.net_name_fields[i].get()}:\n\n"
-            report_content += "【Line_to_Line】\n"
-            if all_line_to_line_lists[i]:
-                for item in all_line_to_line_lists[i]:
-                    report_content += "".join(item) + "\n"
-            report_content += "\n【Line_to_Via】\n"
-            if all_line_to_via_lists[i]:
-                for item in all_line_to_via_lists[i]:
-                    report_content += "".join(item) + "\n"
-            report_content += "\n【Line_to_Shape】\n"
-            if all_line_to_shape_lists[i]:
-                for item in all_line_to_shape_lists[i]:
-                    report_content += "".join(item) + "\n"
-            report_content += "\n【Via_to_Line】\n"
-            if all_via_to_line_lists[i]:
-                for item in all_via_to_line_lists[i]:
-                    report_content += "".join(item) + "\n"
-            report_content += "\n【Via_to_Via】\n"
-            if all_via_to_via_lists[i]:
-                for item in all_via_to_via_lists[i]:
-                    report_content += "".join(item) + "\n"
+            for i in range(4):
+                report_content += f"\n{self.net_name_fields[i].get()}:\n\n"
+                report_content += "【Line_to_Line】\n"
+                if all_line_to_line_lists[i]:
+                    for item in all_line_to_line_lists[i]:
+                        report_content += "".join(item) + "\n"
+                report_content += "\n【Line_to_Via】\n"
+                if all_line_to_via_lists[i]:
+                    for item in all_line_to_via_lists[i]:
+                        report_content += "".join(item) + "\n"
+                report_content += "\n【Line_to_Shape】\n"
+                if all_line_to_shape_lists[i]:
+                    for item in all_line_to_shape_lists[i]:
+                        report_content += "".join(item) + "\n"
+                report_content += "\n【Via_to_Line】\n"
+                if all_via_to_line_lists[i]:
+                    for item in all_via_to_line_lists[i]:
+                        report_content += "".join(item) + "\n"
+                report_content += "\n【Via_to_Via】\n"
+                if all_via_to_via_lists[i]:
+                    for item in all_via_to_via_lists[i]:
+                        report_content += "".join(item) + "\n"
 
-            # 自動產生檔名並保存到指定路徑
-            default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
-            save_directory = os.path.join(os.getcwd(), "Spacing reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
-            os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
-            save_path = os.path.join(save_directory, default_filename)
+                # 自動產生檔名並保存到指定路徑
+                default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
+                save_directory = os.path.join(os.getcwd(), "Spacing reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
+                os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
+                save_path = os.path.join(save_directory, default_filename)
 
-            try:
-                with open(save_path, "w", encoding="utf-8") as f:
-                    f.write(report_content)
+                try:
+                    with open(save_path, "w", encoding="utf-8") as f:
+                        f.write(report_content)
 
-                # messagebox.showinfo("Success", "Report saved successfully!")
-            except Exception as e:
-                messagebox.showerror("Error", f"Error saving report: {e}")
+                    # messagebox.showinfo("Success", "Report saved successfully!")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Error saving report: {e}")
     
     @staticmethod
     def process_file(file_path,
