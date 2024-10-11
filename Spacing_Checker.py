@@ -295,6 +295,13 @@ class TabContent(Frame):
                       tab_name,
                       brd_name
                       ):
+        
+        # 自動產生檔名並保存到指定路徑
+        default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
+        save_directory = os.path.join(os.getcwd(), "Spacing reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
+        os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
+        save_path = os.path.join(save_directory, default_filename)
+
         if any(all_line_to_line_lists):
             report_content = f"Board File : {brd_name}\n\n"
             # report_content += f"{tab_name} Report\n\n"
@@ -321,12 +328,6 @@ class TabContent(Frame):
                 if all_via_to_via_lists[i]:
                     for item in all_via_to_via_lists[i]:
                         report_content += "".join(item) + "\n"
-
-                # 自動產生檔名並保存到指定路徑
-                default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
-                save_directory = os.path.join(os.getcwd(), "Spacing reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
-                os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
-                save_path = os.path.join(save_directory, default_filename)
 
                 try:
                     with open(save_path, "w", encoding="utf-8") as f:

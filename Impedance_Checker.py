@@ -103,12 +103,11 @@ class GUIApplication(tk.Tk):
                         with open(tab_filepath, "r", encoding="utf-8") as tab_file:
                             combined_file.write(tab_file.read())
                             combined_file.write("\n\n")  # 在每個報告之間添加分隔
-                            
-            if os.path.exists(combined_report_path) and os.path.getsize(combined_report_path) == 0:
-                with open(combined_report_path, "w", encoding="utf-8") as combined_file:
-                    # 加入指定的文字到檔案開頭
-                    combined_file.write("The constrain settings are all correct!!\n\n") 
 
+            if os.stat(combined_report_path).st_size == 0:  # 判斷檔案資料是否為空
+                with open(combined_report_path, "w", encoding="utf-8") as combined_file:
+                    combined_file.write("The constrain settings are all correct!!\n\n") 
+                            
         except Exception as e:
             messagebox.showerror("Error", f"Error combining reports: {e}")  
         print("Reports output successfully.")
@@ -248,6 +247,13 @@ class TabContent(Frame):
         self.output_report(all_no_match_lists, all_match_lists, tab_name, brd_name)
 
     def output_report(self, all_no_match_lists, all_match_lists, tab_name, brd_name):
+        
+        # 自動產生檔名並保存到指定路徑
+        default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
+        save_directory = os.path.join(os.getcwd(), "Impedance reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
+        os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
+        save_path = os.path.join(save_directory, default_filename)
+
         if any(all_no_match_lists): 
             report_content = f"Board File : {brd_name}\n\n"
             # report_content += f"{tab_name} Report\n\n"
@@ -265,13 +271,7 @@ class TabContent(Frame):
                         report_content += ",".join(item) + "\n"
                 else:
                     report_content += "\n\n"
-
-                # 自動產生檔名並保存到指定路徑
-                default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
-                save_directory = os.path.join(os.getcwd(), "Impedance reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
-                os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
-                save_path = os.path.join(save_directory, default_filename)
-
+                
                 try:
                     with open(save_path, "w", encoding="utf-8") as f:
                         f.write(report_content)
