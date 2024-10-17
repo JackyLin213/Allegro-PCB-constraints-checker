@@ -3,6 +3,7 @@ from tkinter import filedialog, messagebox, scrolledtext
 from tkinter.ttk import Frame, Notebook, Entry, Button, Label
 import os
 import re  # import regex expression
+import shutil
 
 
 class GUIApplication(tk.Tk):
@@ -83,6 +84,20 @@ class GUIApplication(tk.Tk):
             messagebox.showerror("Error", f"Error converting file: {e}")
             return
 
+        # Clear the "Impedance reports" directory before processing tabs
+        save_directory = os.path.join(os.getcwd(), "Impedance reports")
+        os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
+        for filename in os.listdir(save_directory):
+            file_path = os.path.join(save_directory, filename)
+            try:
+                if os.path.isfile(file_path):  # 如果路徑內有檔案
+                    os.unlink(file_path) 
+                elif os.path.isdir(file_path):  # 如果路徑內有資料夾
+                    shutil.rmtree(file_path)
+
+            except Exception as e:
+                print(f"Failed to delete {file_path}.")
+
         for i, tab_content in enumerate(self.tab_contents):
             tab_content.process_tab(output_file_path, self.tab_names[i], brd_name)  # 將 brd_name 傳給 process_tab
 
@@ -110,7 +125,7 @@ class GUIApplication(tk.Tk):
                             
         except Exception as e:
             messagebox.showerror("Error", f"Error combining reports: {e}")  
-        print("Reports output successfully.")
+        print("Combine_Reports output successfully.")
 
     def convert_rpt_to_txt(self, input_file_path, output_file_path):
         data = []
@@ -251,7 +266,6 @@ class TabContent(Frame):
         # 自動產生檔名並保存到指定路徑
         default_filename = tab_name.replace(" ", "_") + ".txt"  # 將空格替換為底線
         save_directory = os.path.join(os.getcwd(), "Impedance reports")  # 指定保存路徑為當前目錄下的 "reports" 資料夾
-        os.makedirs(save_directory, exist_ok=True)  # 如果資料夾不存在，則建立
         save_path = os.path.join(save_directory, default_filename)
 
         if any(all_no_match_lists): 
