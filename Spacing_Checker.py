@@ -28,7 +28,7 @@ class Utils:
 class GUIApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Spacing Checker V1.2")
+        self.title("Spacing Checker V1.3")
         self.geometry("1280x850")
         # self.resizable(False, False)
         self.tab_contents = []
@@ -49,19 +49,19 @@ class GUIApplication(tk.Tk):
         tab_control.pack(expand=1, fill="both")
         
         predefined_net_names1 = [
-            "*PCIE4_*X*", "*USB2*_D*", "*MDI*",
+            "*P*E5_*X*", "*USB2*_D*", "*MDI*",
             "*SATA*_*X*", "CLK*", "", "", ""
         ]
         predefined_net_names2 = [
-            "*PCIE3_*X*", "*USB3*_*X*", "",
+            "*P*E4_*X*", "*USB3*_*X*", "",
             "", "", "", "", ""
         ]
         predefined_net_names3 = [
-            "*PCIE2_*X*", "", "", "",
+            "*P*E3_*X*", "*P*E1_*X*", "", "",
             "", "", "", ""
         ]
         predefined_net_names4 = [
-            "", "", "", "",
+            "*P*E2_*X*", "", "", "",
             "", "", "", ""
         ]
         
@@ -162,8 +162,9 @@ class GUIApplication(tk.Tk):
                     next(file)
                     continue
                 
-                if is_data_section and line.startswith("Net"):
+                if is_data_section and line.startswith("Net") or line.startswith("ClassClass"):
                     values = self.extract_values(line)  # 調用 extract_values 函數從該行提取values
+                    # print(values)
                     if values:  # 如果提取到values
                         self.add_unique(data, values)  # 調用 add_unique 函數將values添加到 data 列表中，確保不重複添加
         
@@ -199,6 +200,7 @@ class TabContent(Frame):
         self.line_to_shape_areas = []
         self.via_to_line_areas = []
         self.via_to_via_areas = []
+        self.group_line_to_line_areas = []
 
         for i in range(4):
             net_name_label = Label(self, text="輸入net name")
@@ -246,12 +248,20 @@ class TabContent(Frame):
             via_to_via_area = scrolledtext.ScrolledText(self, height=5, width=60)
             via_to_via_area.grid(row=10, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
             self.via_to_via_areas.append(via_to_via_area)
+
+            group_line_to_line_label = Label(self, text="Group Line to Line")
+            group_line_to_line_label.grid(row=11, column=i*4, padx=5, pady=5, sticky='w')
+            group_line_to_line_area = scrolledtext.ScrolledText(self, height=5, width=60)
+            group_line_to_line_area.grid(row=12, column=i*4, columnspan=2, padx=5, pady=5, sticky="nsew")
+            self.group_line_to_line_areas.append(group_line_to_line_area)
             
             self.grid_columnconfigure(i*4, weight=1)
             self.grid_columnconfigure(i*4+1, weight=1)
             self.grid_columnconfigure(i*4+2, weight=1)
             self.grid_columnconfigure(i*4+3, weight=1)
             self.grid_columnconfigure(i*4+4, weight=1)
+            self.grid_columnconfigure(i*4+5, weight=1)
+
 
     def process_tab(self, file_path, tab_name, brd_name):
         all_line_to_line_lists = []
@@ -259,6 +269,7 @@ class TabContent(Frame):
         all_line_to_shape_lists = []
         all_via_to_line_lists = []
         all_via_to_via_lists = []
+        all_group_line_to_line_lists = []
 
         for i in range(4):
             target_net_name = self.net_name_fields[i].get()
@@ -267,6 +278,7 @@ class TabContent(Frame):
             line_to_shape_list = []
             via_to_line_list = []
             via_to_via_list = []
+            group_line_to_line_list = []
 
             try:
                 self.process_file(file_path,
@@ -275,19 +287,22 @@ class TabContent(Frame):
                                   line_to_via_list,
                                   line_to_shape_list,
                                   via_to_line_list,
-                                  via_to_via_list
+                                  via_to_via_list,
+                                  group_line_to_line_list
                                   )
                 self.display_results(line_to_line_list, self.line_to_line_areas[i])
                 self.display_results(line_to_via_list, self.line_to_via_areas[i])
                 self.display_results(line_to_shape_list, self.line_to_shape_areas[i])
                 self.display_results(via_to_line_list, self.via_to_line_areas[i])
                 self.display_results(via_to_via_list, self.via_to_via_areas[i])
+                self.display_results(group_line_to_line_list, self.group_line_to_line_areas[i])
 
                 all_line_to_line_lists.append(line_to_line_list)
                 all_line_to_via_lists.append(line_to_via_list)
                 all_line_to_shape_lists.append(line_to_shape_list)
                 all_via_to_line_lists.append(via_to_line_list)
                 all_via_to_via_lists.append(via_to_via_list)
+                all_group_line_to_line_lists.append(group_line_to_line_list)
 
             except Exception as e:
                 messagebox.showerror("Error", f"Error processing file: {e}")
@@ -297,6 +312,7 @@ class TabContent(Frame):
                            all_line_to_shape_lists,
                            all_via_to_line_lists,
                            all_via_to_via_lists,
+                           all_group_line_to_line_lists,
                            tab_name,
                            brd_name
                            )
@@ -307,6 +323,7 @@ class TabContent(Frame):
                       all_line_to_shape_lists,
                       all_via_to_line_lists,
                       all_via_to_via_lists,
+                      all_group_line_to_line_lists,
                       tab_name,
                       brd_name
                       ):
@@ -342,6 +359,10 @@ class TabContent(Frame):
                 if all_via_to_via_lists[i]:
                     for item in all_via_to_via_lists[i]:
                         report_content += "".join(item) + "\n"
+                report_content += "\n【Group_Line_to_Line】\n"
+                if all_group_line_to_line_lists[i]:
+                    for item in all_group_line_to_line_lists[i]:
+                        report_content += "".join(item) + "\n"
 
                 try:
                     with open(save_path, "w", encoding="utf-8") as f:
@@ -358,20 +379,24 @@ class TabContent(Frame):
                      line_to_via_list,
                      line_to_shape_list,
                      via_to_line_list,
-                     via_to_via_list
+                     via_to_via_list,
+                     group_line_to_line_list
                      ):
         regex_target_net_name = Utils.wildcard_to_regex(target_net_name)  # 將輸入的net name轉成regex type
 
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 parts = line.strip().split(",")  # 將file內的data依","方式做split
-                if len(parts) >= 7 and parts[0] == "Net":  # 假如split後有6個part，且part[0] = NET，則繼續
+                if len(parts) >= 7 and parts[0] == "Net":  # 假如split後有7個part，且part[0] = NET，則繼續
                     if re.match(regex_target_net_name, parts[1]):  # 將regex_second_line和parts[1]做match
                         line_to_line_list.append(f"{parts[1]},{parts[2]}")
                         line_to_via_list.append(f"{parts[1]},{parts[3]}")
                         line_to_shape_list.append(f"{parts[1]},{parts[4]}")
                         via_to_line_list.append(f"{parts[1]},{parts[5]}")
                         via_to_via_list.append(f"{parts[1]},{parts[6]}")
+                if len(parts) >= 7 and parts[0] == "ClassClass":  # 假如split後有7個part，且part[0] = NET，則繼續
+                    if re.match(regex_target_net_name, parts[1]):  # 將regex_second_line和parts[1]做match       
+                        group_line_to_line_list.append(f"{parts[1]},{parts[2]}")
 
         # Sort lists in descending order
         line_to_line_list.sort()
@@ -379,6 +404,7 @@ class TabContent(Frame):
         line_to_shape_list.sort()
         via_to_line_list.sort()
         via_to_via_list.sort()
+        group_line_to_line_list.sort()
 
     @staticmethod
     def display_results(result_list, text_area):
