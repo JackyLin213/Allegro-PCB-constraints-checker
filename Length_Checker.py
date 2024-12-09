@@ -302,7 +302,7 @@ class TabContent(Frame):
                 parts = line.strip().split(",")  # 將file內的data依","方式做split
                 if len(parts) == 3 and parts[0] == "Net":  # 假如split後有3個part，且part[0] = NET，則繼續
                     if re.match(regex_second_line, parts[1]):  # 將regex_second_line和parts[1]做match
-                        if target_third_line and target_third_line == parts[2]:
+                        if target_third_line and target_third_line in parts[2]:
                             match_list.append(parts[1])
                         else:
                             no_match_list.append([parts[1], parts[2]])
