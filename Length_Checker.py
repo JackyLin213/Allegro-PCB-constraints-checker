@@ -30,19 +30,19 @@ class GUIApplication(tk.Tk):
         tab_control.pack(expand=1, fill="both")
         
         predefined_net_names1 = [
-            "*P*E5_*X*", "*USB2*_D*", "*MDI*",
+            "*P*E5_*TX*", "*P*E2_*X*", "*MDI*",
             "*SATA*_*X*", "CLK*", "", "", ""
         ]
         predefined_net_names2 = [
-            "*P*E4_*X*", "*USB3*_*X*", "",
+            "*P*E5_*RX*", "*P*E1_*X*", "",
             "", "", "", "", ""
         ]
         predefined_net_names3 = [
-            "*P*E3_*X*", "*P*E1_*X*", "", "",
+            "*P*E4_*X*", "*USB2*_D*", "", "",
             "", "", "", ""
         ]
         predefined_net_names4 = [
-            "*P*E2_*X*", "", "", "",
+            "*P*E3_*X*", "*USB3*_*X*", "", "",
             "", "", "", ""
         ]
         
