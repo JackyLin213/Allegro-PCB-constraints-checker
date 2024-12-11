@@ -155,7 +155,11 @@ class GUIApplication(tk.Tk):
             if brd_name:  # 如果成功提取到brd_name，則先寫入
                 file.write(brd_name + "\n")
             for values in data:
-                file.write(",".join(values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
+                try:
+                    values[2] = int(float(values[2]))  # 將 part[7] (也就是 values[2]) 轉換為 int
+                except ValueError:
+                    print(f"Warning: Could not find the length of {values[1]}.")
+                file.write(",".join(str(v) for v in values) + "\n")  # 將每一組數據用","組成一個字串，並換行，然後寫入到 .txt 文件中
             print("Convert RPT to TXT successfully.")
         
         return brd_name  # 返回 brd_name
@@ -302,7 +306,7 @@ class TabContent(Frame):
                 parts = line.strip().split(",")  # 將file內的data依","方式做split
                 if len(parts) == 3 and parts[0] == "Net":  # 假如split後有3個part，且part[0] = NET，則繼續
                     if re.match(regex_second_line, parts[1]):  # 將regex_second_line和parts[1]做match
-                        if target_third_line and target_third_line in parts[2]:
+                        if target_third_line and target_third_line == parts[2]:
                             match_list.append(parts[1])
                         else:
                             no_match_list.append([parts[1], parts[2]])
